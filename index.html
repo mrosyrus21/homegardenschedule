@@ -141,8 +141,10 @@ body::after{
 /* Secondary row tabs */
 .tab-secondary{flex:1;padding:6px 0 5px;font-size:9px;letter-spacing:.09em;opacity:.55}
 .tab-secondary.active{opacity:.9}
-#tab-grow.active{color:#4ADE80;text-shadow:0 0 14px rgba(74,222,128,.5)}
-#tab-grow.active::after{background:linear-gradient(90deg,rgba(74,222,128,0),#4ADE80,rgba(74,222,128,0))}
+#tab-garden.active{color:#4ADE80;text-shadow:0 0 14px rgba(74,222,128,.5)}
+#tab-garden.active::after{background:linear-gradient(90deg,rgba(74,222,128,0),#4ADE80,rgba(74,222,128,0))}
+#tab-wellness.active{color:#38BDF8;text-shadow:0 0 14px rgba(56,189,248,.5)}
+#tab-wellness.active::after{background:linear-gradient(90deg,rgba(56,189,248,0),#38BDF8,rgba(56,189,248,0))}
 #tab-print.active { color:#FB923C; border-bottom-color:#FB923C; }
 .print-step-card { background:rgba(251,146,60,.07); border:1px solid rgba(251,146,60,.2); border-radius:14px; padding:14px 16px; margin-bottom:10px; display:flex; gap:14px; align-items:flex-start; cursor:pointer; transition:background .15s; }
 .print-step-card.done { background:rgba(45,184,112,.06); border-color:rgba(45,184,112,.2); }
@@ -508,7 +510,6 @@ body::after{
 
   <div class="tabs">
     <button class="tab active" onclick="switchTab('today')" id="tab-today">☀️ Today</button>
-    <button class="tab" onclick="switchTab('grow')" id="tab-grow">🌱 Grow</button>
     <button class="tab" onclick="switchTab('garden')" id="tab-garden">🌿 Garden</button>
     <button class="tab" onclick="switchTab('shopping')" id="tab-shopping">🦐 Aquaponics</button>
     <button class="tab" onclick="switchTab('grocery')" id="tab-grocery">🛒 List</button>
@@ -517,6 +518,7 @@ body::after{
   <div class="tabs-secondary">
     <button class="tab tab-secondary" onclick="switchTab('rooms')" id="tab-rooms">🏠 Rooms</button>
     <button class="tab tab-secondary" onclick="switchTab('timeline')" id="tab-timeline">📅 Timeline</button>
+    <button class="tab tab-secondary" onclick="switchTab('wellness')" id="tab-wellness">💊 Wellness</button>
   </div>
 </div>
 
@@ -527,7 +529,7 @@ body::after{
   <div id="view-garden" style="display:none"></div>
   <div id="view-shopping" style="display:none"></div>
   <div id="view-grocery" style="display:none"></div>
-  <div id="view-grow" style="display:none"></div>
+  <div id="view-wellness" style="display:none"></div>
   <div id="view-print" style="display:none"></div>
 </div>
 
@@ -899,7 +901,7 @@ function waterStatus(p) {
 
 function switchTab(t) {
   currentTab=t;
-  ["today","grow","timeline","rooms","garden","shopping","grocery","print"].forEach(v=>{
+  ["today","wellness","timeline","rooms","garden","shopping","grocery","print"].forEach(v=>{
     const el=document.getElementById("view-"+v);
     if(el) { el.style.display=v===t?"block":"none";
       if(v===t){ el.classList.remove("view-animate"); void el.offsetWidth; el.classList.add("view-animate"); } }
@@ -1595,8 +1597,61 @@ function renderGarden() {
     ${gnatDone===GNAT_STEPS.length?`<div style="margin-top:12px;font-size:13px;color:var(--green);font-style:italic;text-align:center">✨ Gnat-free! Keep letting soil dry between waterings.</div>`:""}
   </div>`;
 
+  // ── PLANT OF THE WEEK ──────────────────────────────────────────────────────
+  const SPOTLIGHT = [
+    { id:"basil1",        tip:"Pinch every flower bud immediately — once basil bolts, leaves turn bitter. Cut just above a leaf pair each week to keep it bushy." },
+    { id:"tomato",        tip:"Water at the base every morning. As fruits swell, back off slightly — mild stress concentrates sugars. Flowers dropping petals means fruiting started." },
+    { id:"cherry_tomato", tip:"Check daily once fruits start blushing — they split if left too long. Harvest promptly and the plant pushes out more clusters." },
+    { id:"philodendron",  tip:"Still on gnat hold — let it go completely bone dry. When you water again, water deeply then wait. Wipe dusty leaves monthly." },
+    { id:"parsley",       tip:"Harvest outer stems at the base and leave the young inner growth. Never take more than half. Each harvest signals more production." },
+    { id:"jalapeno",      tip:"Less water = hotter pepper. Let the top 2 inches dry completely. Pick at 3-4 inches, firm and dark green, for best heat." },
+    { id:"mint",          tip:"Harvest aggressively — unpicked mint gets woody. Pinch flower buds immediately. Cut stems back by half if leggy." },
+    { id:"jade",          tip:"Extremely drought tolerant — the gnat hold is fine for 3+ weeks. Water only when leaves start to lose their firm, waxy look." }
+  ];
+  const weekNum = Math.floor(Date.now() / (7 * 24 * 3600 * 1000));
+  const spot = SPOTLIGHT[weekNum % SPOTLIGHT.length];
+  const spotPlant = PLANTS.find(p => p.id === spot.id) || PLANTS[0];
+  html += `<div class="section-label">🌱 Plant of the Week</div>
+  <div style="background:linear-gradient(135deg,rgba(45,184,112,.11),rgba(45,184,112,.03));border:1px solid rgba(45,184,112,.26);border-radius:var(--rad);padding:18px;margin-bottom:14px;position:relative;overflow:hidden">
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(45,184,112,.55),transparent)"></div>
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
+      <div style="font-size:44px;line-height:1">${spotPlant.emoji}</div>
+      <div>
+        <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(45,184,112,.65);font-family:'Lora',serif;margin-bottom:3px">This Week</div>
+        <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--text)">${spotPlant.name}</div>
+        <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;font-style:italic;text-transform:capitalize;margin-top:1px">${spotPlant.loc}</div>
+      </div>
+    </div>
+    <div style="background:rgba(0,0,0,.22);border-radius:9px;padding:11px 13px;font-size:13px;color:rgba(237,229,248,.82);font-family:'Lora',serif;line-height:1.65;border-left:3px solid rgba(45,184,112,.4)">💡 ${spot.tip}</div>
+    <div style="margin-top:9px;font-size:11px;color:rgba(45,184,112,.5);font-family:'Lora',serif;font-style:italic">${spotPlant.freq.split('. ')[0]}</div>
+  </div>`;
+
+  // ── HARVEST COUNTDOWN ───────────────────────────────────────────────────────
+  const HARVESTS = [
+    { label:"Parsley",         emoji:"🌿", date:"2026-06-05", note:"Outer stems at base, leave inner" },
+    { label:"Jalapeño",        emoji:"🌶️", date:"2026-07-10", note:"3-4 in, firm, dark green" },
+    { label:"Cherry Tomatoes", emoji:"🍒", date:"2026-07-15", note:"Check daily once blushing" },
+    { label:"Heirloom Tomato", emoji:"🍅", date:"2026-07-20", note:"Deep red, slightly soft" }
+  ];
+  const todayDate = new Date(today + "T12:00:00");
+  html += `<div class="section-label">🍅 Harvest Countdown</div>`;
+  HARVESTS.forEach(h => {
+    const diff = Math.ceil((new Date(h.date+"T12:00:00") - todayDate) / 86400000);
+    const past = diff < 0, soon = diff >= 0 && diff <= 10;
+    html += `<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;margin-bottom:7px;border-radius:var(--radsm);background:${soon&&!past?"rgba(45,184,112,.07)":"rgba(255,255,255,.02)"};border:1px solid ${soon&&!past?"rgba(45,184,112,.22)":"rgba(255,255,255,.05)"}">
+      <div style="font-size:22px">${h.emoji}</div>
+      <div style="flex:1"><div style="font-size:13px;color:var(--text);font-family:'Lora',serif;font-weight:700">${h.label}</div>
+        <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;font-style:italic">${h.note}</div></div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:${past?"var(--green)":soon?"#4ADE80":"var(--amber2)"}">${past?"Due now":soon&&diff===0?"Today!":soon?diff+"d 🔥":diff+"d"}</div>
+        <div style="font-size:9px;color:var(--text2);font-family:'Lora',serif">${h.date}</div>
+      </div>
+    </div>`;
+  });
+
   el.innerHTML = html;
 }
+
 
 
 function renderShopping() {
@@ -1887,98 +1942,93 @@ function renderPrint() {
 }
 
 
-// ── GROW TAB ─────────────────────────────────────────────────────────────────
-function renderGrow() {
-  const el = document.getElementById("view-grow");
+
+// ── WELLNESS HELPERS ──────────────────────────────────────────────────────────
+function toggleWellness(key) {
+  const k = "well-" + key + "-" + todayKey();
+  laundry[k] = !laundry[k];
+  saveLaundry();
+  renderAll();
+}
+function logPain(val) {
+  const log = JSON.parse(localStorage.getItem("painlog")||"{}");
+  log[todayKey()] = val;
+  localStorage.setItem("painlog", JSON.stringify(log));
+  renderAll();
+}
+
+// ── WELLNESS TAB ──────────────────────────────────────────────────────────────
+function renderWellness() {
+  const el = document.getElementById("view-wellness");
   const today = todayKey();
-  const todayDate = new Date(today + "T12:00:00");
-
-  // Plant of the Week — rotates weekly
-  const SPOTLIGHT = [
-    { id:"basil1",        tip:"Pinch every flower bud the moment it appears — once basil bolts, leaves turn bitter. Cut just above a leaf pair every week to keep it bushy and producing." },
-    { id:"tomato",        tip:"Water at the base every morning. As fruits swell, back off water slightly — mild stress concentrates sugars. Look for flowers dropping petals to know fruiting has started." },
-    { id:"cherry_tomato", tip:"Check daily once fruits start blushing red — they split if left too long after ripening. Harvest promptly and the plant produces more clusters." },
-    { id:"philodendron",  tip:"Still on gnat hold — let it go bone dry. When you do water again, water deeply, then wait. Wipe dusty leaves with a damp cloth to keep photosynthesis strong." },
-    { id:"parsley",       tip:"Harvest outer stems at the base and leave the young inner growth. Never take more than half. Each harvest signals the plant to produce more." },
-    { id:"jalapeno",      tip:"Less water = hotter pepper. Let the top 2 inches dry completely before each watering. Pick at 3-4 inches, firm and dark green, for best heat and flavor." },
-    { id:"mint",          tip:"Harvest aggressively — mint that isn't cut gets woody and leggy. Pinch flower buds immediately. Cut stems back by half if they're getting tall." },
-    { id:"jade",          tip:"Jade is extremely drought tolerant — the gnat hold is fine for 3+ weeks. Water only when leaves lose their firm, waxy look and start to wrinkle slightly." }
-  ];
-  const weekNum = Math.floor(Date.now() / (7 * 24 * 3600 * 1000));
-  const spot = SPOTLIGHT[weekNum % SPOTLIGHT.length];
-  const plant = PLANTS.find(p => p.id === spot.id) || PLANTS[0];
-
-  // Gnat treatment
-  const gnatDone = GNAT_STEPS.filter(s => gnat[s.id]).length;
-  const gnatPct  = Math.round(gnatDone / GNAT_STEPS.length * 100);
-
-  // Harvest countdown
-  const HARVESTS = [
-    { label:"Parsley",          emoji:"🌿", date:"2026-06-05", note:"Outer stems at base, leave inner growth" },
-    { label:"Cherry Tomatoes",  emoji:"🍒", date:"2026-07-15", note:"Check daily once they start blushing" },
-    { label:"Heirloom Tomato",  emoji:"🍅", date:"2026-07-20", note:"Deep red, slightly soft to the touch" },
-    { label:"Jalapeño",         emoji:"🌶️", date:"2026-07-10", note:"3-4 inches, firm and dark green" }
-  ];
-
+  const log   = JSON.parse(localStorage.getItem("painlog")||"{}");
   let out = "";
 
-  // ── Plant of the Week card ──
-  out += `<div class="section-label">🌱 Plant of the Week</div>
-  <div style="background:linear-gradient(135deg,rgba(45,184,112,.12),rgba(45,184,112,.03));border:1px solid rgba(45,184,112,.28);border-radius:var(--rad);padding:20px 18px;margin-bottom:16px;position:relative;overflow:hidden">
-    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(45,184,112,.6),transparent)"></div>
-    <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px">
-      <div style="font-size:48px;line-height:1">${plant.emoji}</div>
-      <div>
-        <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(45,184,112,.7);font-family:'Lora',serif;margin-bottom:4px">This Week</div>
-        <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--text)">${plant.name}</div>
-        <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;margin-top:2px;font-style:italic;text-transform:capitalize">${plant.loc}</div>
+  // ── Litfulo med reminder ──
+  const litDone = !!laundry["well-litfulo-"+today];
+  out += `<div class="section-label">💊 Medications</div>
+  <div onclick="toggleWellness('litfulo')" style="background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(99,102,241,.03));border:1px solid rgba(99,102,241,.${litDone?"15":"3"});border-radius:var(--rad);padding:16px 18px;margin-bottom:14px;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(99,102,241,.08)">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="font-size:30px;flex-shrink:0">${litDone?"✅":"💊"}</div>
+      <div style="flex:1">
+        <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:${litDone?"var(--text3)":"var(--text)"};${litDone?"text-decoration:line-through":""}">Litfulo (ritlecitinib)</div>
+        <div style="font-size:12px;color:var(--text2);font-family:'Lora',serif;margin-top:3px">Take daily · JAK inhibitor for alopecia areata · Currently refilling</div>
+        <div style="font-size:11px;color:rgba(99,102,241,.7);font-family:'Lora',serif;margin-top:3px;font-style:italic">Missing doses may worsen symptoms — stay consistent when refill arrives</div>
       </div>
+      <div style="width:26px;height:26px;border-radius:50%;border:2px solid ${litDone?"#10B981":"rgba(99,102,241,.5)"};background:${litDone?"#10B981":"transparent"};display:flex;align-items:center;justify-content:center;color:#000;font-weight:900;font-size:12px;flex-shrink:0;transition:all .25s cubic-bezier(.34,1.56,.64,1)">${litDone?"✓":""}</div>
     </div>
-    <div style="background:rgba(0,0,0,.25);border-radius:10px;padding:12px 14px;font-size:13px;color:rgba(237,229,248,.85);font-family:'Lora',serif;line-height:1.65;border-left:3px solid rgba(45,184,112,.45)">
-      💡 ${spot.tip}
-    </div>
-    <div style="margin-top:10px;font-size:11px;color:rgba(45,184,112,.55);font-family:'Lora',serif;font-style:italic">Watering: ${plant.freq.split('. ')[0]}</div>
   </div>`;
 
-  // ── Gnat treatment ──
-  out += `<div class="section-label">🪲 Gnat Treatment — ${gnatDone}/${GNAT_STEPS.length} steps</div>
-  <div style="background:linear-gradient(135deg,rgba(180,80,40,.08),rgba(180,80,40,.02));border:1px solid rgba(180,80,40,.22);border-radius:var(--rad);padding:16px 18px;margin-bottom:16px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-      <div style="font-size:13px;font-weight:700;color:var(--text);font-family:'Playfair Display',serif">BTI Tea Treatment</div>
-      <div style="font-size:13px;color:${gnatPct===100?"var(--green)":"var(--amber2)"};font-family:'Lora',serif;font-weight:700">${gnatPct}%</div>
-    </div>
-    <div style="background:rgba(255,255,255,.05);border-radius:6px;height:5px;margin-bottom:14px;overflow:hidden">
-      <div style="height:100%;width:${gnatPct}%;background:linear-gradient(90deg,#B87010,#F0A820);border-radius:6px;transition:width .4s"></div>
-    </div>
-    ${GNAT_STEPS.map(s => {
-      const done = !!gnat[s.id];
-      return `<div onclick="toggleGnat('${s.id}')" style="display:flex;align-items:center;gap:10px;padding:7px 2px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:opacity .15s" onmouseenter="this.style.opacity='.75'" onmouseleave="this.style.opacity='1'">
-        <div style="width:18px;height:18px;border-radius:5px;border:1.5px solid ${done?"#2DB870":"rgba(255,255,255,.2)"};background:${done?"rgba(45,184,112,.2)":"transparent"};flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#2DB870;font-weight:900;transition:all .2s">${done?"✓":""}</div>
-        <div style="font-size:12px;color:${done?"var(--text3)":"var(--text2)"};font-family:'Lora',serif;${done?"text-decoration:line-through":""};line-height:1.4">${s.label}</div>
+  // ── Sleep setup checklist ──
+  const SLEEP_ITEMS = [
+    { key:"knees",   label:"Pillow under knees",                   note:"Tilts pelvis, reduces pressure on glutes and buttock joint" },
+    { key:"arms",    label:"Arms at sides, wrists straight",        note:"Not curled under, not overhead" },
+    { key:"neck",    label:"Pillow keeps neck level with spine",     note:"Not too high, not flat" },
+    { key:"side",    label:"If on side: pillow between knees",       note:"Keeps hips stacked; hug a pillow so shoulder stays neutral" },
+  ];
+  const sleepDone = SLEEP_ITEMS.filter(s => !!laundry["well-sleep-"+s.key+"-"+today]).length;
+  out += `<div class="section-label">🛌 Sleep Setup — ${sleepDone}/${SLEEP_ITEMS.length} ready</div>
+  <div style="background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.18);border-radius:var(--rad);padding:14px 16px;margin-bottom:14px">
+    ${SLEEP_ITEMS.map(s => {
+      const done = !!laundry["well-sleep-"+s.key+"-"+today];
+      return `<div onclick="toggleWellness('sleep-${s.key}')" style="display:flex;align-items:flex-start;gap:11px;padding:9px 2px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer">
+        <div style="width:20px;height:20px;border-radius:6px;border:1.5px solid ${done?"#8B5CF6":"rgba(139,92,246,.3)"};background:${done?"rgba(139,92,246,.2)":"transparent"};flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#A78BFA;font-weight:900;margin-top:1px;transition:all .2s">${done?"✓":""}</div>
+        <div style="flex:1"><div style="font-size:13px;color:${done?"var(--text3)":"var(--text)"};font-family:'Lora',serif;${done?"text-decoration:line-through":""}">${s.label}</div>
+          <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;margin-top:1px;font-style:italic">${s.note}</div></div>
       </div>`;
     }).join("")}
-    ${gnatDone === GNAT_STEPS.length ? `<div style="margin-top:12px;font-size:12px;color:var(--green);text-align:center;font-style:italic">✨ Gnat-free — keep letting soil dry between waterings.</div>` : ""}
   </div>`;
 
-  // ── Harvest countdown ──
-  out += `<div class="section-label">🍅 Harvest Countdown</div>`;
-  HARVESTS.forEach(h => {
-    const hDate = new Date(h.date + "T12:00:00");
-    const diff  = Math.ceil((hDate - todayDate) / 86400000);
-    const past  = diff < 0;
-    const soon  = diff >= 0 && diff <= 10;
-    out += `<div style="display:flex;align-items:center;gap:14px;padding:12px 16px;margin-bottom:8px;border-radius:var(--radsm);background:${soon && !past ? "rgba(45,184,112,.08)" : "rgba(255,255,255,.025)"};border:1px solid ${soon && !past ? "rgba(45,184,112,.25)" : "rgba(255,255,255,.06)"}">
-      <div style="font-size:26px;flex-shrink:0">${h.emoji}</div>
-      <div style="flex:1;min-width:0">
-        <div style="font-size:13px;color:var(--text);font-family:'Lora',serif;font-weight:700">${h.label}</div>
-        <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;margin-top:2px;font-style:italic">${h.note}</div>
-      </div>
-      <div style="text-align:right;flex-shrink:0">
-        <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:${past ? "var(--green)" : soon ? "#4ADE80" : "var(--amber2)"}">${past ? "Due now" : soon ? diff === 0 ? "Today!" : diff + "d 🔥" : diff + "d"}</div>
-        <div style="font-size:9px;color:var(--text2);font-family:'Lora',serif;margin-top:1px">${h.date}</div>
-      </div>
-    </div>`;
-  });
+  // ── Pain log ──
+  const todayPain = log[today];
+  const PAIN_OPTS = [
+    { val:"good", label:"😌 Good",  col:"#2DB870", bg:"rgba(45,184,112,.12)" },
+    { val:"sore", label:"😬 Sore",  col:"#F59E0B", bg:"rgba(245,158,11,.12)" },
+    { val:"bad",  label:"😖 Bad",   col:"#EF4444", bg:"rgba(239,68,68,.12)"  },
+  ];
+  out += `<div class="section-label">📊 How Are You Feeling Today?</div>
+  <div style="background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:var(--rad);padding:16px 18px;margin-bottom:14px">
+    <div style="display:flex;gap:10px;margin-bottom:${todayPain?"14px":"0"}">
+      ${PAIN_OPTS.map(o => `<button onclick="logPain('${o.val}')" style="flex:1;padding:12px 0;border-radius:10px;background:${todayPain===o.val?o.bg:"rgba(255,255,255,.04)"};border:1.5px solid ${todayPain===o.val?o.col:"rgba(255,255,255,.1)"};color:${todayPain===o.val?o.col:"var(--text2)"};cursor:pointer;font-family:'Lora',serif;font-size:13px;font-weight:${todayPain===o.val?"700":"400"};transition:all .2s">${o.label}</button>`).join("")}
+    </div>
+    ${todayPain ? `<div style="font-size:12px;color:var(--text2);font-family:'Lora',serif;font-style:italic;text-align:center">Logged for ${today} — tap to change</div>` : ""}
+  </div>`;
+
+  // ── Doctor visit notes ──
+  out += `<div class="section-label">🏥 Doctor Visit Notes — May 28, 2026</div>
+  <div style="background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.15);border-radius:var(--rad);padding:16px 18px;margin-bottom:14px">
+    <div style="font-size:12px;color:rgba(56,189,248,.9);font-family:'Lora',serif;font-weight:700;margin-bottom:10px">Key Symptom Summary</div>
+    ${[
+      ["Current", "Aching pain both arms (wrists, shoulder blade area), both hands/wrists symmetric, buttock joint area, feeling run down"],
+      ["Pattern", "Started left-sided after sleep, spread to both sides over one day. Worse after rest. Previously always left side only."],
+      ["Background", "On Litfulo (ritlecitinib, JAK inhibitor) for alopecia — recently ran out. Was recently sick. Desk job, sit/stand desk."],
+      ["Red flags cleared", "No chest pain, no shortness of breath, no numbness or weakness, no shooting leg pain."],
+      ["Questions", "Symmetric joint pain cause? Viral contribution? Litfulo interaction or rebound? Infection risk from immunosuppression? Labs/imaging?"]
+    ].map(([label, text]) => `<div style="margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid rgba(255,255,255,.05)">
+      <div style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(56,189,248,.5);font-family:'Lora',serif;margin-bottom:3px">${label}</div>
+      <div style="font-size:12px;color:var(--text2);font-family:'Lora',serif;line-height:1.55">${text}</div>
+    </div>`).join("")}
+  </div>`;
 
   el.innerHTML = out;
 }
@@ -1986,7 +2036,7 @@ function renderGrow() {
 function renderAll() {
   updateHeader();
   if(currentTab==="today")    renderToday();
-  if(currentTab==="grow")     renderGrow();
+  if(currentTab==="wellness") renderWellness();
   if(currentTab==="timeline") renderTimeline();
   if(currentTab==="rooms")    renderRooms();
   if(currentTab==="garden")   renderGarden();
