@@ -744,20 +744,28 @@ const PLANTS = [
     trim:"Cut all the dead/bare stems back hard. Check the base: firm and green means it will regenerate fast; mushy means root rot from overwatering. Do not water on a schedule until you see new growth pushing up." },
   { id:"dill",     name:"Dill",            emoji:"🌿", loc:"greenhouse", freq:"Morning — when top 2 inches dry", days:3, trimDays:7,
     trim:"Snip outer fronds near the base. Cut flower heads to extend leaf production. Once fully flowered it declines — let go to seed if you want seeds for cooking." },
-  { id:"rosemary", name:"Rosemary",        emoji:"🌿", loc:"greenhouse", freq:"Morning — weekly or less, drought tolerant", days:7,
+  { id:"rosemary", name:"Rosemary",        emoji:"🌿", loc:"greenhouse", freq:"Morning — weekly or less, drought tolerant", days:7, trimDays:14,
     trim:"Only trim new green growth — never cut into woody brown stems. Snip sprigs as you cook. Light shaping only." },
 
   // ── OUTDOOR EDIBLES ───────────────────────────────────────────────────────
-  { id:"strawberry",    name:"Strawberry",         emoji:"🍓", loc:"outdoor", freq:"Daily — terra cotta pocket planter dries fast. Water slowly so all pockets saturate. In heat: may need morning AND evening. Water when top feels dry (could be twice daily). Check lower pockets get moisture.", days:1, note:"Runners visible — pinch to push energy into fruit, or root into new pots. White flowers open now — fruiting imminent. Terra cotta wicks moisture fast; never skip a day in sun." },
-  { id:"tomato",        name:"Heirloom Tomato",     emoji:"🍅", loc:"outdoor", freq:"Morning at the base — deep & CONSISTENT every day in heat; ease off slightly as fruit ripens", days:1, note:"Big green beefsteaks are set (May 29) — some show catfacing/cracking scars, which come from irregular watering, so keep it even. Pinch out suckers (the shoots in the V between stem and branch) weekly and strip leaves touching the soil. Re-stake or cage it — it is leaning and outgrowing the bamboo." },
-  { id:"cherry_tomato", name:"Husky Cherry Tomato", emoji:"🍒", loc:"outdoor", freq:"Morning at the base — daily in heat, ease off when ripening (prevents splitting)", days:1, note:"Small green cherries forming (May 29). Husky is a compact (determinate) type — do NOT sucker-prune it like the heirloom or you cut your harvest. Just remove leaves touching the soil and any yellowing growth." },
-  { id:"jalapeno",      name:"Jalapeño",            emoji:"🌶️", loc:"outdoor", freq:"Morning at the base — every 2-3 days, let top 2 inches dry. Less water = hotter pepper!", days:2, note:"Recovered well and growing strong (May 29). Pinch the first flowers if you want a bushier plant and a bigger later harvest. Remove any yellowing lower leaves; otherwise it needs little pruning." },
-  { id:"raspberry",     name:"Raspberry",           emoji:"🍇", loc:"outdoor", freq:"Morning at the base — every 2-3 days, deep soak", days:2, note:"Robust and tall (May 29). These are first-year canes (primocanes) — do NOT cut them back; they fruit next year. Just tie them to the support as they grow and snip any dead or damaged tips." },
+  { id:"strawberry",    name:"Strawberry",         emoji:"🍓", loc:"outdoor", freq:"Daily — terra cotta pocket planter dries fast. Water slowly so every pocket saturates; in heat it may need morning AND evening.", days:1, trimDays:14,
+    trim:"Pinch off runners unless you want new plants (root them into pots). Remove browning/dead outer leaves. White flowers are open now — pinch a few of the earliest for bigger berries on the rest." },
+  { id:"tomato",        name:"Heirloom Tomato",     emoji:"🍅", loc:"outdoor", freq:"Morning at the base — deep & CONSISTENT every day in heat (uneven watering is what causes the catfacing/cracking). Ease off slightly as fruit ripens.", days:1, trimDays:7,
+    trim:"Pinch out suckers (the shoots in the V between stem and a branch) weekly. Strip leaves touching the soil. Re-stake or cage it — it is leaning and outgrowing the bamboo. Harvest beefsteaks as they turn deep red and slightly soft." },
+  { id:"cherry_tomato", name:"Husky Cherry Tomato", emoji:"🍒", loc:"outdoor", freq:"Morning at the base — daily in heat, ease off when ripening to prevent splitting.", days:1, trimDays:10,
+    trim:"Compact (determinate) type — do NOT sucker-prune it or you cut your harvest. Just remove leaves touching the soil and yellowing growth. Pick cherries promptly once they blush and it pushes out more clusters." },
+  { id:"jalapeno",      name:"Jalapeño",            emoji:"🌶️", loc:"outdoor", freq:"Morning at the base — every 2-3 days, let the top 2 inches dry. Less water = hotter pepper.", days:2, trimDays:21,
+    trim:"Pinch the first flowers for a bushier plant and a bigger later harvest. Remove yellowing lower leaves. Pick at 3-4 inches, firm and dark green, for best heat." },
+  { id:"raspberry",     name:"Raspberry",           emoji:"🍇", loc:"outdoor", freq:"Morning at the base — every 2-3 days, deep soak.", days:2, trimDays:21,
+    trim:"First-year canes (primocanes) — do NOT cut them back; they fruit next year. Tie them to the support as they grow and snip any dead or damaged tips." },
 
   // ── OUTDOOR ORNAMENTALS ───────────────────────────────────────────────────
-  { id:"dianthus",  name:"Dianthus / Pinks", emoji:"🌸", loc:"outdoor", freq:"Morning — every 2-3 days at the base, try not to wet the flowers", days:2, note:"Full bloom now (May 29) with a lot of spent brown flowers mixed in. Deadhead constantly — snip every faded bloom down to the next bud or leaf. That is the #1 thing that keeps it flowering all summer." },
-  { id:"daisy",     name:"Daisy",            emoji:"🌼", loc:"outdoor", freq:"Morning — every 2 days, needs consistency", days:2, note:"Still showing leaf stress (May 29). Make sure it is NOT sitting in water — the nursery basket inside the pot traps moisture. Deadhead spent flowers, remove yellow/brown leaves, and ideally repot into the terra cotta directly with drainage." },
-  { id:"candytuft", name:"Candytuft",        emoji:"🌾", loc:"outdoor", freq:"Morning — every 3-4 days, fairly drought tolerant", days:3, note:"Spring bloom is finishing (May 29) and it is getting leggy. Shear the whole plant back by about a third now — keeps it compact and can trigger a second flush of flowers." }];
+  { id:"dianthus",  name:"Dianthus / Pinks", emoji:"🌸", loc:"outdoor", freq:"Morning — every 2-3 days at the base, try not to wet the flowers.", days:2, trimDays:5,
+    trim:"Deadhead constantly — snip every faded bloom down to the next bud or leaf. Lots of spent blooms right now; do a full pass. This is the #1 thing that keeps it flowering all summer." },
+  { id:"daisy",     name:"Daisy",            emoji:"🌼", loc:"outdoor", freq:"Morning — every 2 days, needs consistency. Make sure it is not sitting in water — the nursery basket inside the pot traps moisture.", days:2, trimDays:7,
+    trim:"Deadhead spent flowers at the base of the stem and remove yellow/brown leaves. To fix the ongoing leaf stress, repot into the terra cotta directly with proper drainage." },
+  { id:"candytuft", name:"Candytuft",        emoji:"🌾", loc:"outdoor", freq:"Morning — every 3-4 days, fairly drought tolerant.", days:3, trimDays:30,
+    trim:"Spring bloom is finishing and it is getting leggy — shear the whole plant back by about a third now to keep it compact and trigger a second flush." }];
 
 const GNAT_STEPS = [
   { id:"g_buy",   label:"Buy Mosquito Bits + yellow sticky traps" },
@@ -1483,116 +1491,73 @@ function renderGarden() {
   const d = new Date();
   html += `<div class="today-date">${d.toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"})}</div>`;
 
-  // ── TODAY'S WATERING ────────────────────────────────────────────────────────
-  const wDoneIds = PLANTS.filter(p => watered[p.id] === today).map(p => p.id);
-  const dueSchedIds = new Set([...plantsDueOn(today).map(p => p.id), ...wDoneIds]);
-  const dueToday = PLANTS.filter(p => dueSchedIds.has(p.id));
-  const wateredToday = dueToday.filter(p => watered[p.id] === today);
-  if (dueToday.length) {
-    html += `<div class="section-label">💧 Today's Watering — ${wateredToday.length}/${dueToday.length} done</div>`;
-    if (wateredToday.length < dueToday.length) {
-      html += `<div onclick="waterAllDue()" style="background:rgba(45,184,112,.1);border:1px solid rgba(45,184,112,.25);border-radius:10px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;cursor:pointer">
-        <div style="font-size:18px">💧</div><div style="font-size:13px;font-weight:600;color:#4AD490">Mark all as watered today</div></div>`;
-    }
-    dueToday.forEach(p => {
-      const done = watered[p.id] === today;
-      const days = daysSinceWatered(p.id);
-      html += `<div class="plant-card">
-        <div class="plant-top">
-          <div class="plant-emoji">${p.img?`<span style="display:inline-block;width:80px;height:80px;overflow:hidden;border-radius:10px;flex-shrink:0"><img src="${p.img}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentElement.outerHTML='<span style=\"font-size:28px\">${p.emoji}</span>'" /></span>`:p.emoji}</div>
-          <div class="plant-info">
-            <div class="plant-name">${p.name}</div>
-            <div class="plant-freq">${p.freq}</div>
-          </div>
-          <div class="plant-status">
-            <button class="water-btn ${done?"ok":"now"}" onclick="waterPlant('${p.id}')">${done?"✓ Done":"💧 Water"}</button>
-            <div class="plant-days">${days!==null?days+" d ago":"never"}</div>
-          </div>
-        </div>
-      </div>`;
-    });
-  } else {
-    html += `<div style="background:rgba(45,184,112,.08);border:1px solid rgba(45,184,112,.2);border-radius:12px;padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px">
-      <div style="font-size:18px">✅</div>
-      <div style="font-size:13px;color:#4AD490;font-style:italic">All plants are good — nothing to water today</div></div>`;
+  // ── WATERING ────────────────────────────────────────────────────────────────
+  const wDueIds = new Set([...plantsDueOn(today).map(p=>p.id), ...PLANTS.filter(p=>watered[p.id]===today).map(p=>p.id)]);
+  const wDoneCount = PLANTS.filter(p=>watered[p.id]===today && wDueIds.has(p.id)).length;
+  html += `<div class="section-label">💧 Watering — ${wDoneCount}/${wDueIds.size} done today</div>`;
+  if (wDueIds.size > wDoneCount) {
+    html += `<div onclick="waterAllDue()" style="background:rgba(45,184,112,.1);border:1px solid rgba(45,184,112,.25);border-radius:10px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;cursor:pointer">
+      <div style="font-size:18px">💧</div><div style="font-size:13px;font-weight:600;color:#4AD490">Mark all as watered today</div></div>`;
   }
-
-  // ── TODAY'S TRIMMING ────────────────────────────────────────────────────────
-  const tDoneIdsG = PLANTS.filter(p => p.trimDays && trimmed[p.id] === today).map(p => p.id);
-  const trimSchedIds = new Set([...plantsTrimDueOn(today).map(p => p.id), ...tDoneIdsG]);
-  const trimDueToday = PLANTS.filter(p => trimSchedIds.has(p.id));
-  const trimmedToday = trimDueToday.filter(p => trimmed[p.id] === today);
-  if (trimDueToday.length) {
-    html += `<div class="section-label">✂️ Today's Trimming — ${trimmedToday.length}/${trimDueToday.length} done</div>`;
-    if (trimmedToday.length < trimDueToday.length) {
-      html += `<div onclick="trimAllDue('${today}')" style="background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.25);border-radius:10px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;cursor:pointer">
-        <div style="font-size:18px">✂️</div><div style="font-size:13px;font-weight:600;color:#FB923C">Mark all as trimmed today</div></div>`;
-    }
-    trimDueToday.forEach(p => {
-      const done = trimmed[p.id] === today;
-      const daysT = daysSinceTrimmed(p.id);
-      html += `<div class="plant-card">
-        <div class="plant-top">
-          <div class="plant-emoji">${p.emoji}</div>
-          <div class="plant-info">
-            <div class="plant-name">${p.name}</div>
-            <div class="plant-freq">${p.trim||"Trim as needed"}</div>
-          </div>
-          <div class="plant-status">
-            <button class="water-btn ${done?"ok":"now"}" style="background:${done?"rgba(45,184,112,.15)":"rgba(251,146,60,.15)"};border-color:${done?"#2DB870":"#FB923C"};color:${done?"#4AD490":"#FB923C"}" onclick="trimPlant('${p.id}')">${done?"✓ Trimmed":"✂️ Trim"}</button>
-            <div class="plant-days">${daysT!==null?daysT+" d ago":"never"}</div>
-          </div>
+  PLANTS.forEach(p => {
+    const st = waterStatus(p);
+    const days = daysSinceWatered(p.id);
+    const doneT = watered[p.id] === today;
+    const btnLabel = doneT ? "✓ Watered" : st==="now" ? "💧 Water now" : st==="soon" ? "⚠️ Soon" : "✓ Good";
+    const btnClass = doneT ? "ok" : st;
+    html += `<div class="plant-card">
+      <div class="plant-top">
+        <div class="plant-emoji">${p.emoji}</div>
+        <div class="plant-info">
+          <div class="plant-name">${p.name}</div>
+          <div class="plant-freq">${p.freq}</div>
+          ${p.overwater?`<div class="plant-badges"><span class="overwater-badge">⚠️ overwater risk</span></div>`:""}
         </div>
-      </div>`;
-    });
-  }
+        <div class="plant-status">
+          <button class="water-btn ${btnClass}" onclick="waterPlant('${p.id}')">${btnLabel}</button>
+          <div class="plant-days">${days!==null?days+" d ago":"never watered"}</div>
+        </div>
+      </div>
+    </div>`;
+  });
 
-  // ── TODAY'S GARDEN TASKS ────────────────────────────────────────────────────
+  // ── TRIMMING · HARVEST · MAINTENANCE ─────────────────────────────────────────
+  const trimPlants = PLANTS.filter(p => p.trim);
+  const tDueIds = new Set([...plantsTrimDueOn(today).map(p=>p.id), ...PLANTS.filter(p=>p.trimDays&&trimmed[p.id]===today).map(p=>p.id)]);
+  const tDoneCount = PLANTS.filter(p=>p.trimDays&&trimmed[p.id]===today&&tDueIds.has(p.id)).length;
+  html += `<div class="section-label">✂️ Trimming · Harvest · Maintenance — ${tDoneCount}/${tDueIds.size} due done</div>`;
+  if (tDueIds.size > tDoneCount) {
+    html += `<div onclick="trimAllDue('${today}')" style="background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.25);border-radius:10px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;cursor:pointer">
+      <div style="font-size:18px">✂️</div><div style="font-size:13px;font-weight:600;color:#FB923C">Mark all as trimmed today</div></div>`;
+  }
+  trimPlants.forEach(p => {
+    const dT = daysSinceTrimmed(p.id);
+    const doneT = trimmed[p.id] === today;
+    const due = !doneT && (dT===null || (p.trimDays && dT>=p.trimDays));
+    const soon = !doneT && !due && p.trimDays && dT>=p.trimDays-2;
+    const statusTxt = doneT ? "✓ done today" : dT===null ? "do it" : due ? "due now" : soon ? "soon ("+dT+"d)" : dT+" d ago";
+    const statusCol = doneT ? "#4AD490" : due ? "#FB923C" : soon ? "#FBBF24" : "#6B7280";
+    html += `<div class="plant-card">
+      <div class="plant-top">
+        <div class="plant-emoji">${p.emoji}</div>
+        <div class="plant-info">
+          <div class="plant-name">${p.name}</div>
+          <div class="plant-freq">${p.trim}</div>
+        </div>
+        <div class="plant-status">
+          <button class="water-btn" style="background:${doneT?'rgba(45,184,112,.15)':'rgba(251,146,60,.15)'};border:1px solid ${doneT?'#2DB870':'#FB923C'};color:${doneT?'#4AD490':'#FB923C'}" onclick="trimPlant('${p.id}')">${doneT?"✓ Trimmed":"✂️ Trim"}</button>
+          <div class="plant-days" style="color:${statusCol}">${statusTxt}</div>
+        </div>
+      </div>
+    </div>`;
+  });
+
+  // ── TASKS TODAY ──────────────────────────────────────────────────────────────
   const todayGardenTasks = gardenTasksOn(today);
   if (todayGardenTasks.length) {
     html += `<div class="section-label">📋 Tasks Today</div>`;
     html += groupedCardHTML(todayGardenTasks, "");
   }
-
-  // ── PLANT STATUS BY LOCATION ────────────────────────────────────────────────
-  const locations = [
-    { key:"outdoor",    label:"🌤️ Outdoors" },
-    { key:"greenhouse", label:"🌡️ Greenhouse" },
-    { key:"indoor",     label:"🏠 Indoors" },
-  ];
-  locations.forEach(loc => {
-    const plants = PLANTS.filter(p => p.loc === loc.key);
-    if (!plants.length) return;
-    html += `<div class="section-label">${loc.label}</div>`;
-    plants.forEach(p => {
-      const st = waterStatus(p);
-      const days = daysSinceWatered(p.id);
-      const doneT = watered[p.id] === today;
-      const btnLabel = doneT ? "✓ Watered" : st==="ok" ? "✓ Good" : st==="soon" ? "⚠️ Soon" : "💧 Water now";
-      const btnClass = doneT ? "ok" : st;
-      html += `<div class="plant-card">
-        <div class="plant-top">
-          <div class="plant-emoji">${p.img?`<span style="display:inline-block;width:80px;height:80px;overflow:hidden;border-radius:10px;flex-shrink:0"><img src="${p.img}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentElement.outerHTML='<span style=\"font-size:28px\">${p.emoji}</span>'" /></span>`:p.emoji}</div>
-          <div class="plant-info">
-            <div class="plant-name">${p.name}</div>
-            <div class="plant-freq">${p.freq}</div>
-            ${p.note?`<div style="font-size:11px;color:rgba(255,200,100,.75);font-family:'Lora',serif;margin-top:4px;font-style:italic;line-height:1.4">${p.note}</div>`:""}
-            ${p.overwater?`<div class="plant-badges"><span class="overwater-badge">⚠️ overwater risk</span></div>`:""}
-          </div>
-          <div class="plant-status">
-            <button class="water-btn ${btnClass}" onclick="waterPlant('${p.id}')">${btnLabel}</button>
-            <div class="plant-days">${days!==null?days+" d ago":"never watered"}</div>
-          </div>
-        </div>
-        ${p.trimDays?`<div style="display:flex;align-items:center;gap:8px;margin:6px 0 2px;padding:0 4px">
-          <div style="font-size:11px;color:${(()=>{const d=daysSinceTrimmed(p.id);return d===null||d>=p.trimDays?"#FB923C":d>=p.trimDays-2?"#FBBF24":"#6B7280"})()};font-family:'Lora',serif">✂️ ${(()=>{const d=daysSinceTrimmed(p.id);if(d===null)return "never trimmed";if(d>=p.trimDays)return "trim due";if(d>=p.trimDays-2)return "trim soon ("+d+"d)";return "trimmed "+d+"d ago";})()}</div>
-          ${trimmed[p.id]===today?"":`<button onclick="event.stopPropagation();trimPlant('${p.id}')" style="font-size:10px;padding:3px 9px;border-radius:8px;background:rgba(251,146,60,.12);border:1px solid rgba(251,146,60,.3);color:#FB923C;cursor:pointer">✂️ Trim</button>`}
-        </div>`:""}
-        ${p.trim?`<div class="trim-toggle" onclick="trimOpen['${p.id}']=!trimOpen['${p.id}'];renderAll()">✂️ ${trimOpen[p.id]?"Hide":"Show"} trimming guide</div>
-        <div class="trim-detail${trimOpen[p.id]?" open":""}">${p.trim}</div>`:""}
-      </div>`;
-    });
-  });
 
   // ── GNAT TRACKER ───────────────────────────────────────────────────────────
   const gnatDone = GNAT_STEPS.filter(s => gnat[s.id]).length;
@@ -1626,7 +1591,6 @@ function renderGarden() {
       <div>
         <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(45,184,112,.65);font-family:'Lora',serif;margin-bottom:3px">This Week</div>
         <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--text)">${spotPlant.name}</div>
-        <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;font-style:italic;text-transform:capitalize;margin-top:1px">${spotPlant.loc}</div>
       </div>
     </div>
     <div style="background:rgba(0,0,0,.22);border-radius:9px;padding:11px 13px;font-size:13px;color:rgba(237,229,248,.82);font-family:'Lora',serif;line-height:1.65;border-left:3px solid rgba(45,184,112,.4)">💡 ${spot.tip}</div>
