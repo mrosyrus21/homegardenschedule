@@ -748,7 +748,7 @@ const PLANTS = [
     trim:"Only trim new green growth — never cut into woody brown stems. Snip sprigs as you cook. Light shaping only." },
 
   // ── OUTDOOR EDIBLES ───────────────────────────────────────────────────────
-  { id:"strawberry",    name:"Strawberry",         emoji:"🍓", loc:"outdoor", freq:"Morning at the base — check daily, water when top 1 inch dry", days:1 },
+  { id:"strawberry",    name:"Strawberry",         emoji:"🍓", loc:"outdoor", img:"images/strawberry.jpg", freq:"Daily — terra cotta pocket planter dries fast. Water slowly so all pockets saturate. In heat: may need morning AND evening. Water when top feels dry (could be twice daily). Check lower pockets get moisture.", days:1, note:"Runners visible — pinch to push energy into fruit, or root into new pots. White flowers open now — fruiting imminent. Terra cotta wicks moisture fast; never skip a day in sun." },
   { id:"tomato",        name:"Heirloom Tomato",     emoji:"🍅", loc:"outdoor", freq:"Morning at the base — daily in heat, ease off as fruits ripen", days:1 },
   { id:"cherry_tomato", name:"Husky Cherry Tomato", emoji:"🍒", loc:"outdoor", freq:"Morning at the base — daily in heat, ease off when ripening (prevents splitting)", days:1 },
   { id:"jalapeno",      name:"Jalapeño",            emoji:"🌶️", loc:"outdoor", freq:"Morning at the base — every 2-3 days, top 2 inches dry. Less water = hotter pepper!", days:2 },
@@ -1495,7 +1495,7 @@ function renderGarden() {
       const days = daysSinceWatered(p.id);
       html += `<div class="plant-card">
         <div class="plant-top">
-          <div class="plant-emoji">${p.emoji}</div>
+          <div class="plant-emoji">${p.img?`<span style="display:inline-block;width:80px;height:80px;overflow:hidden;border-radius:10px;flex-shrink:0"><img src="${p.img}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentElement.outerHTML='<span style=\"font-size:28px\">${p.emoji}</span>'" /></span>`:p.emoji}</div>
           <div class="plant-info">
             <div class="plant-name">${p.name}</div>
             <div class="plant-freq">${p.freq}</div>
@@ -1566,10 +1566,11 @@ function renderGarden() {
       const btnClass = doneT ? "ok" : st;
       html += `<div class="plant-card">
         <div class="plant-top">
-          <div class="plant-emoji">${p.emoji}</div>
+          <div class="plant-emoji">${p.img?`<span style="display:inline-block;width:80px;height:80px;overflow:hidden;border-radius:10px;flex-shrink:0"><img src="${p.img}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentElement.outerHTML='<span style=\"font-size:28px\">${p.emoji}</span>'" /></span>`:p.emoji}</div>
           <div class="plant-info">
             <div class="plant-name">${p.name}</div>
             <div class="plant-freq">${p.freq}</div>
+            ${p.note?`<div style="font-size:11px;color:rgba(255,200,100,.75);font-family:'Lora',serif;margin-top:4px;font-style:italic;line-height:1.4">${p.note}</div>`:""}
             ${p.overwater?`<div class="plant-badges"><span class="overwater-badge">⚠️ overwater risk</span></div>`:""}
           </div>
           <div class="plant-status">
