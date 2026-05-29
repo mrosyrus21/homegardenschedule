@@ -137,7 +137,12 @@ body::after{
 .tab::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;border-radius:2px;transition:width .25s cubic-bezier(.4,0,.2,1)}
 .tab.active::after{width:70%;background:linear-gradient(90deg,rgba(240,168,32,.0),rgba(240,168,32,1),rgba(240,168,32,.0))}
 .tab.active{color:var(--amber2);text-shadow:0 0 14px rgba(240,168,32,.5);border-bottom:2px solid transparent}
-#tab-timeline { display: none !important; }
+/* Secondary tabs */
+.tab-secondary{flex:0 0 auto;padding:8px 10px 7px;font-size:9px;letter-spacing:.08em;opacity:.6}
+.tab-secondary.active{opacity:1}
+.tab-sep{width:1px;background:rgba(255,255,255,.08);margin:8px 4px;flex-shrink:0}
+#tab-grow.active{color:#4ADE80;text-shadow:0 0 14px rgba(74,222,128,.5)}
+#tab-grow.active::after{background:linear-gradient(90deg,rgba(74,222,128,0),#4ADE80,rgba(74,222,128,0))}
 #tab-print.active { color:#FB923C; border-bottom-color:#FB923C; }
 .print-step-card { background:rgba(251,146,60,.07); border:1px solid rgba(251,146,60,.2); border-radius:14px; padding:14px 16px; margin-bottom:10px; display:flex; gap:14px; align-items:flex-start; cursor:pointer; transition:background .15s; }
 .print-step-card.done { background:rgba(45,184,112,.06); border-color:rgba(45,184,112,.2); }
@@ -500,16 +505,17 @@ body::after{
       <div class="progress-bar-pct" id="habitsPct" style="color:var(--teal)">0%</div>
     </div>
   </div>
-  <div class="tl-pill-row">
-    <button id="btn-timeline" onclick="switchTab('timeline')" style="font-size:11px;padding:4px 12px;border-radius:20px;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.35);color:#818CF8;cursor:pointer;font-family:'Lora',serif;letter-spacing:.04em;white-space:nowrap;display:none">📅 Timeline</button>
-  </div>
+
   <div class="tabs">
     <button class="tab active" onclick="switchTab('today')" id="tab-today">☀️ Today</button>
-    <button class="tab" onclick="switchTab('rooms')" id="tab-rooms">🏠 Rooms</button>
+    <button class="tab" onclick="switchTab('grow')" id="tab-grow">🌱 Grow</button>
     <button class="tab" onclick="switchTab('garden')" id="tab-garden">🌿 Garden</button>
     <button class="tab" onclick="switchTab('shopping')" id="tab-shopping">🦐 Aquaponics</button>
     <button class="tab" onclick="switchTab('grocery')" id="tab-grocery">🛒 List</button>
     <button class="tab" onclick="switchTab('print')" id="tab-print">🖨️ Print</button>
+    <div class="tab-sep"></div>
+    <button class="tab tab-secondary" onclick="switchTab('rooms')" id="tab-rooms">🏠 Rooms</button>
+    <button class="tab tab-secondary" onclick="switchTab('timeline')" id="tab-timeline">📅 Timeline</button>
   </div>
 </div>
 
@@ -520,6 +526,7 @@ body::after{
   <div id="view-garden" style="display:none"></div>
   <div id="view-shopping" style="display:none"></div>
   <div id="view-grocery" style="display:none"></div>
+  <div id="view-grow" style="display:none"></div>
   <div id="view-print" style="display:none"></div>
 </div>
 
@@ -891,16 +898,16 @@ function waterStatus(p) {
 
 function switchTab(t) {
   currentTab=t;
-  ["today","timeline","rooms","garden","shopping","grocery","print"].forEach(v=>{
+  ["today","grow","timeline","rooms","garden","shopping","grocery","print"].forEach(v=>{
     const el=document.getElementById("view-"+v);
     if(el) { el.style.display=v===t?"block":"none";
       if(v===t){ el.classList.remove("view-animate"); void el.offsetWidth; el.classList.add("view-animate"); } }
     const tb=document.getElementById("tab-"+v);
-    if(tb) tb.className="tab"+(v===t?" active":"");
+    if(tb) {
+      const isSecondary=tb.classList.contains("tab-secondary");
+      tb.className="tab"+(isSecondary?" tab-secondary":"")+(v===t?" active":"");
+    }
   });
-  // Timeline pill — show only when NOT in timeline
-  const tlBtn=document.getElementById("btn-timeline");
-  if(tlBtn) tlBtn.style.display=t==="timeline"?"none":"inline-block";
   renderAll();
 }
 
@@ -1878,9 +1885,107 @@ function renderPrint() {
   const fpBarEl = document.getElementById('fpBar'); if(fpBarEl) fpBarEl.style.width = Math.round(fpDone/14*100)+'%';
 }
 
+
+// ── GROW TAB ─────────────────────────────────────────────────────────────────
+function renderGrow() {
+  const el = document.getElementById("view-grow");
+  const today = todayKey();
+  const todayDate = new Date(today + "T12:00:00");
+
+  // Plant of the Week — rotates weekly
+  const SPOTLIGHT = [
+    { id:"basil1",        tip:"Pinch every flower bud the moment it appears — once basil bolts, leaves turn bitter. Cut just above a leaf pair every week to keep it bushy and producing." },
+    { id:"tomato",        tip:"Water at the base every morning. As fruits swell, back off water slightly — mild stress concentrates sugars. Look for flowers dropping petals to know fruiting has started." },
+    { id:"cherry_tomato", tip:"Check daily once fruits start blushing red — they split if left too long after ripening. Harvest promptly and the plant produces more clusters." },
+    { id:"philodendron",  tip:"Still on gnat hold — let it go bone dry. When you do water again, water deeply, then wait. Wipe dusty leaves with a damp cloth to keep photosynthesis strong." },
+    { id:"parsley",       tip:"Harvest outer stems at the base and leave the young inner growth. Never take more than half. Each harvest signals the plant to produce more." },
+    { id:"jalapeno",      tip:"Less water = hotter pepper. Let the top 2 inches dry completely before each watering. Pick at 3-4 inches, firm and dark green, for best heat and flavor." },
+    { id:"mint",          tip:"Harvest aggressively — mint that isn't cut gets woody and leggy. Pinch flower buds immediately. Cut stems back by half if they're getting tall." },
+    { id:"jade",          tip:"Jade is extremely drought tolerant — the gnat hold is fine for 3+ weeks. Water only when leaves lose their firm, waxy look and start to wrinkle slightly." }
+  ];
+  const weekNum = Math.floor(Date.now() / (7 * 24 * 3600 * 1000));
+  const spot = SPOTLIGHT[weekNum % SPOTLIGHT.length];
+  const plant = PLANTS.find(p => p.id === spot.id) || PLANTS[0];
+
+  // Gnat treatment
+  const gnatDone = GNAT_STEPS.filter(s => gnat[s.id]).length;
+  const gnatPct  = Math.round(gnatDone / GNAT_STEPS.length * 100);
+
+  // Harvest countdown
+  const HARVESTS = [
+    { label:"Parsley",          emoji:"🌿", date:"2026-06-05", note:"Outer stems at base, leave inner growth" },
+    { label:"Cherry Tomatoes",  emoji:"🍒", date:"2026-07-15", note:"Check daily once they start blushing" },
+    { label:"Heirloom Tomato",  emoji:"🍅", date:"2026-07-20", note:"Deep red, slightly soft to the touch" },
+    { label:"Jalapeño",         emoji:"🌶️", date:"2026-07-10", note:"3-4 inches, firm and dark green" }
+  ];
+
+  let out = "";
+
+  // ── Plant of the Week card ──
+  out += `<div class="section-label">🌱 Plant of the Week</div>
+  <div style="background:linear-gradient(135deg,rgba(45,184,112,.12),rgba(45,184,112,.03));border:1px solid rgba(45,184,112,.28);border-radius:var(--rad);padding:20px 18px;margin-bottom:16px;position:relative;overflow:hidden">
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(45,184,112,.6),transparent)"></div>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px">
+      <div style="font-size:48px;line-height:1">${plant.emoji}</div>
+      <div>
+        <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(45,184,112,.7);font-family:'Lora',serif;margin-bottom:4px">This Week</div>
+        <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--text)">${plant.name}</div>
+        <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;margin-top:2px;font-style:italic;text-transform:capitalize">${plant.loc}</div>
+      </div>
+    </div>
+    <div style="background:rgba(0,0,0,.25);border-radius:10px;padding:12px 14px;font-size:13px;color:rgba(237,229,248,.85);font-family:'Lora',serif;line-height:1.65;border-left:3px solid rgba(45,184,112,.45)">
+      💡 ${spot.tip}
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:rgba(45,184,112,.55);font-family:'Lora',serif;font-style:italic">Watering: ${plant.freq.split('. ')[0]}</div>
+  </div>`;
+
+  // ── Gnat treatment ──
+  out += `<div class="section-label">🪲 Gnat Treatment — ${gnatDone}/${GNAT_STEPS.length} steps</div>
+  <div style="background:linear-gradient(135deg,rgba(180,80,40,.08),rgba(180,80,40,.02));border:1px solid rgba(180,80,40,.22);border-radius:var(--rad);padding:16px 18px;margin-bottom:16px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div style="font-size:13px;font-weight:700;color:var(--text);font-family:'Playfair Display',serif">BTI Tea Treatment</div>
+      <div style="font-size:13px;color:${gnatPct===100?"var(--green)":"var(--amber2)"};font-family:'Lora',serif;font-weight:700">${gnatPct}%</div>
+    </div>
+    <div style="background:rgba(255,255,255,.05);border-radius:6px;height:5px;margin-bottom:14px;overflow:hidden">
+      <div style="height:100%;width:${gnatPct}%;background:linear-gradient(90deg,#B87010,#F0A820);border-radius:6px;transition:width .4s"></div>
+    </div>
+    ${GNAT_STEPS.map(s => {
+      const done = !!gnat[s.id];
+      return `<div onclick="toggleGnat('${s.id}')" style="display:flex;align-items:center;gap:10px;padding:7px 2px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:opacity .15s" onmouseenter="this.style.opacity='.75'" onmouseleave="this.style.opacity='1'">
+        <div style="width:18px;height:18px;border-radius:5px;border:1.5px solid ${done?"#2DB870":"rgba(255,255,255,.2)"};background:${done?"rgba(45,184,112,.2)":"transparent"};flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#2DB870;font-weight:900;transition:all .2s">${done?"✓":""}</div>
+        <div style="font-size:12px;color:${done?"var(--text3)":"var(--text2)"};font-family:'Lora',serif;${done?"text-decoration:line-through":""};line-height:1.4">${s.label}</div>
+      </div>`;
+    }).join("")}
+    ${gnatDone === GNAT_STEPS.length ? `<div style="margin-top:12px;font-size:12px;color:var(--green);text-align:center;font-style:italic">✨ Gnat-free — keep letting soil dry between waterings.</div>` : ""}
+  </div>`;
+
+  // ── Harvest countdown ──
+  out += `<div class="section-label">🍅 Harvest Countdown</div>`;
+  HARVESTS.forEach(h => {
+    const hDate = new Date(h.date + "T12:00:00");
+    const diff  = Math.ceil((hDate - todayDate) / 86400000);
+    const past  = diff < 0;
+    const soon  = diff >= 0 && diff <= 10;
+    out += `<div style="display:flex;align-items:center;gap:14px;padding:12px 16px;margin-bottom:8px;border-radius:var(--radsm);background:${soon && !past ? "rgba(45,184,112,.08)" : "rgba(255,255,255,.025)"};border:1px solid ${soon && !past ? "rgba(45,184,112,.25)" : "rgba(255,255,255,.06)"}">
+      <div style="font-size:26px;flex-shrink:0">${h.emoji}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;color:var(--text);font-family:'Lora',serif;font-weight:700">${h.label}</div>
+        <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;margin-top:2px;font-style:italic">${h.note}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:${past ? "var(--green)" : soon ? "#4ADE80" : "var(--amber2)"}">${past ? "Due now" : soon ? diff === 0 ? "Today!" : diff + "d 🔥" : diff + "d"}</div>
+        <div style="font-size:9px;color:var(--text2);font-family:'Lora',serif;margin-top:1px">${h.date}</div>
+      </div>
+    </div>`;
+  });
+
+  el.innerHTML = out;
+}
+
 function renderAll() {
   updateHeader();
   if(currentTab==="today")    renderToday();
+  if(currentTab==="grow")     renderGrow();
   if(currentTab==="timeline") renderTimeline();
   if(currentTab==="rooms")    renderRooms();
   if(currentTab==="garden")   renderGarden();
@@ -1894,8 +1999,6 @@ function showApp() {
   const el = document.getElementById('fb-loading');
   if (el) el.remove();
   autoCarryOverdue();
-  const tlBtn=document.getElementById("btn-timeline");
-  if(tlBtn&&currentTab!=="timeline") tlBtn.style.display="inline-block";
   renderAll();
 }
 
