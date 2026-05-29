@@ -128,7 +128,6 @@ body::after{
 
 /* Tabs */
 .tabs{display:flex;margin-top:8px;gap:0;position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.04)}
-.tabs-secondary{display:flex;gap:0;position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.03);background:rgba(0,0,0,.12)}
 .tab{
   flex:1;background:none;border:none;cursor:pointer;
   padding:10px 0 9px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
@@ -138,13 +137,7 @@ body::after{
 .tab::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;border-radius:2px;transition:width .25s cubic-bezier(.4,0,.2,1)}
 .tab.active::after{width:70%;background:linear-gradient(90deg,rgba(240,168,32,.0),rgba(240,168,32,1),rgba(240,168,32,.0))}
 .tab.active{color:var(--amber2);text-shadow:0 0 14px rgba(240,168,32,.5);border-bottom:2px solid transparent}
-/* Secondary row tabs */
-.tab-secondary{flex:1;padding:6px 0 5px;font-size:9px;letter-spacing:.09em;opacity:.55}
-.tab-secondary.active{opacity:.9}
-#tab-garden.active{color:#4ADE80;text-shadow:0 0 14px rgba(74,222,128,.5)}
-#tab-garden.active::after{background:linear-gradient(90deg,rgba(74,222,128,0),#4ADE80,rgba(74,222,128,0))}
-#tab-wellness.active{color:#38BDF8;text-shadow:0 0 14px rgba(56,189,248,.5)}
-#tab-wellness.active::after{background:linear-gradient(90deg,rgba(56,189,248,0),#38BDF8,rgba(56,189,248,0))}
+#tab-timeline { display: none !important; }
 #tab-print.active { color:#FB923C; border-bottom-color:#FB923C; }
 .print-step-card { background:rgba(251,146,60,.07); border:1px solid rgba(251,146,60,.2); border-radius:14px; padding:14px 16px; margin-bottom:10px; display:flex; gap:14px; align-items:flex-start; cursor:pointer; transition:background .15s; }
 .print-step-card.done { background:rgba(45,184,112,.06); border-color:rgba(45,184,112,.2); }
@@ -507,18 +500,16 @@ body::after{
       <div class="progress-bar-pct" id="habitsPct" style="color:var(--teal)">0%</div>
     </div>
   </div>
-
+  <div class="tl-pill-row">
+    <button id="btn-timeline" onclick="switchTab('timeline')" style="font-size:11px;padding:4px 12px;border-radius:20px;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.35);color:#818CF8;cursor:pointer;font-family:'Lora',serif;letter-spacing:.04em;white-space:nowrap;display:none">📅 Schedule</button>
+  </div>
   <div class="tabs">
     <button class="tab active" onclick="switchTab('today')" id="tab-today">☀️ Today</button>
-    <button class="tab" onclick="switchTab('garden')" id="tab-garden">🌿 Plants</button>
-    <button class="tab" onclick="switchTab('shopping')" id="tab-shopping">🦐 Tank</button>
+    <button class="tab" onclick="switchTab('rooms')" id="tab-rooms">🏠 Rooms</button>
+    <button class="tab" onclick="switchTab('garden')" id="tab-garden">🌿 Garden</button>
+    <button class="tab" onclick="switchTab('shopping')" id="tab-shopping">🦐 Aquaponics</button>
     <button class="tab" onclick="switchTab('grocery')" id="tab-grocery">🛒 List</button>
-    <button class="tab" onclick="switchTab('print')" id="tab-print">🧊 Print</button>
-  </div>
-  <div class="tabs-secondary">
-    <button class="tab tab-secondary" onclick="switchTab('rooms')" id="tab-rooms">🏠 Rooms</button>
-    <button class="tab tab-secondary" onclick="switchTab('timeline')" id="tab-timeline">📅 Timeline</button>
-    <button class="tab tab-secondary" onclick="switchTab('wellness')" id="tab-wellness">💊 Wellness</button>
+    <button class="tab" onclick="switchTab('print')" id="tab-print">🖨️ Print</button>
   </div>
 </div>
 
@@ -529,7 +520,6 @@ body::after{
   <div id="view-garden" style="display:none"></div>
   <div id="view-shopping" style="display:none"></div>
   <div id="view-grocery" style="display:none"></div>
-  <div id="view-wellness" style="display:none"></div>
   <div id="view-print" style="display:none"></div>
 </div>
 
@@ -684,7 +674,7 @@ const SCHEDULE = [
   { date:"2026-05-26", tasks:["k3","k_stovetop"],                 note:"Counter clear + stovetop deep clean" },
   { date:"2026-05-27", tasks:["k5"],                              note:"Light Wednesday — find homes for countertop strays" },
   { date:"2026-05-28", tasks:["ba5","ba2","ba_medicine"],         note:"Bathroom reset — fresh towels, mirror, medicine cabinet" },
-  { date:"2026-05-29", tasks:["doctor_visit","ba1"], note:"Scrub bathroom + swap shower liner" },
+  { date:"2026-05-29", tasks:["ba1"],                note:"Scrub bathroom + swap shower liner" },
   { date:"2026-05-30", tasks:["g1","g2","g3"],                    note:"Garage day — clear it out and get the pegboard up" },
   { date:"2026-05-31", tasks:["g4","g5","g_floor"],               note:"Weekend — workbench, labeling, degrease the floor" },
   // ── WEEK 4 ──────────────────────────────────────────────────────────────────
@@ -740,24 +730,32 @@ const PLANTS = [
     trim:"Pinch flower buds immediately, cut above leaf nodes, remove yellow lower leaves. Bushy growth = more harvest." },
   { id:"parsley",  name:"Curled Parsley",  emoji:"🌿", loc:"greenhouse", freq:"Morning — when top 2 inches dry, every 3-4 days", days:3, trimDays:14,
     trim:"Dead flower stalks → cut at base completely. Harvest outer stems at the base, leaving young inner growth. Never take more than half. Every 2-3 weeks." },
-  { id:"mint",     name:"Peppermint",      emoji:"🌿", loc:"greenhouse", freq:"Morning only — when top 2 inches dry. Currently overwatered", days:3, overwater:true, trimDays:7,
-    trim:"Pinch flower buds to keep leaves coming. Cut stems back by half if leggy — mint bounces back fast. Harvest aggressively." },
+  { id:"mint",     name:"Peppermint",      emoji:"🌿", loc:"greenhouse", freq:"⚠️ Died back badly (May 29) — HOLD water until soil is dry AND you confirm the crown is alive. Mint almost always regrows from the roots", days:3, overwater:true, trimDays:7,
+    trim:"Cut all the dead/bare stems back hard. Check the base: if the crown is firm and green it'll regenerate fast — if it's mushy, that's root rot from overwatering. Don't water on a schedule until you see new growth pushing up." },
   { id:"dill",     name:"Dill",            emoji:"🌿", loc:"greenhouse", freq:"Morning — when top 2 inches dry", days:3, trimDays:7,
     trim:"Snip outer fronds near the base. Cut flower heads to extend leaf production. Once fully flowered it declines — let go to seed if you want seeds for cooking." },
   { id:"rosemary", name:"Rosemary",        emoji:"🌿", loc:"greenhouse", freq:"Morning — weekly or less, drought tolerant", days:7,
     trim:"Only trim new green growth — never cut into woody brown stems. Snip sprigs as you cook. Light shaping only." },
 
   // ── OUTDOOR EDIBLES ───────────────────────────────────────────────────────
-  { id:"strawberry",    name:"Strawberry",         emoji:"🍓", loc:"outdoor", img:"images/strawberry.jpg", freq:"Daily — terra cotta pocket planter dries fast. Water slowly so all pockets saturate. In heat: may need morning AND evening. Water when top feels dry (could be twice daily). Check lower pockets get moisture.", days:1, note:"Runners visible — pinch to push energy into fruit, or root into new pots. White flowers open now — fruiting imminent. Terra cotta wicks moisture fast; never skip a day in sun." },
-  { id:"tomato",        name:"Heirloom Tomato",     emoji:"🍅", loc:"outdoor", freq:"Morning at the base — daily in heat, ease off as fruits ripen", days:1 },
-  { id:"cherry_tomato", name:"Husky Cherry Tomato", emoji:"🍒", loc:"outdoor", freq:"Morning at the base — daily in heat, ease off when ripening (prevents splitting)", days:1 },
-  { id:"jalapeno",      name:"Jalapeño",            emoji:"🌶️", loc:"outdoor", freq:"Morning at the base — every 2-3 days, top 2 inches dry. Less water = hotter pepper!", days:2 },
-  { id:"raspberry",     name:"Raspberry",           emoji:"🍇", loc:"outdoor", freq:"Morning at the base — every 2-3 days", days:2 },
+  { id:"strawberry",    name:"Strawberry",         emoji:"🍓", loc:"outdoor", freq:"Morning at the base — keep soil consistently moist. Flowering & fruiting now (May 29), so don't let it dry out", days:1, trimDays:14,
+    trim:"Pinch off runners (the long horizontal stems) unless you want new plants. Remove any browning/dead outer leaves at the base. Pinch a few of the earliest flowers if you want bigger berries on the rest. Every couple weeks." },
+  { id:"tomato",        name:"Heirloom Tomato",     emoji:"🍅", loc:"outdoor", freq:"Morning at the base — deep & CONSISTENT every day in heat. Big green beefsteaks are set (May 29); irregular watering is what causes the catfacing/cracking. Ease off slightly as fruit ripens", days:1, trimDays:7,
+    trim:"Remove suckers — the shoots growing in the 'V' between the main stem and a branch — once a week for better fruit. Strip any leaves touching the soil (disease prevention). Re-stake or cage it: the plant is leaning and outgrowing the bamboo. Don't strip too many leaves in heat — fruit needs shade from sunscald." },
+  { id:"cherry_tomato", name:"Husky Cherry Tomato", emoji:"🍒", loc:"outdoor", freq:"Morning at the base — daily in heat. Small green cherries forming (May 29); ease off when ripening to prevent splitting", days:1, trimDays:10,
+    trim:"Husky is a compact (determinate) variety — do NOT sucker-prune it like the heirloom or you'll cut your harvest. Just remove leaves touching the soil and any yellowing growth. Light tidy only." },
+  { id:"jalapeno",      name:"Jalapeño",            emoji:"🌶️", loc:"outdoor", freq:"Morning at the base — every 2-3 days, let top 2 inches dry. Recovered well & growing strong (May 29). Less water = hotter pepper!", days:2, trimDays:21,
+    trim:"Pinch the very first flowers if you want a bushier plant and a bigger main harvest later. Remove any yellowing lower leaves. Otherwise minimal — peppers need little pruning." },
+  { id:"raspberry",     name:"Raspberry",           emoji:"🍇", loc:"outdoor", freq:"Morning at the base — every 2-3 days, deep soak. Robust and tall (May 29)", days:2, trimDays:21,
+    trim:"These are first-year canes (primocanes) — do NOT cut them back; they grow this year and fruit next year. Just tie them to the support as they lengthen and snip any dead or damaged tips." },
 
   // ── OUTDOOR ORNAMENTALS ───────────────────────────────────────────────────
-  { id:"dianthus",  name:"Dianthus / Pinks", emoji:"🌸", loc:"outdoor", freq:"Morning — every 2-3 days", days:2 },
-  { id:"daisy",     name:"Daisy",            emoji:"🌼", loc:"outdoor", freq:"Morning — every 2 days, needs consistency", days:2 },
-  { id:"candytuft", name:"Candytuft",        emoji:"🌾", loc:"outdoor", freq:"Morning — every 3-4 days, fairly drought tolerant", days:3 }];
+  { id:"dianthus",  name:"Dianthus / Pinks", emoji:"🌸", loc:"outdoor", freq:"Morning — every 2-3 days at the base, try not to wet the flowers. Full bloom now (May 29)", days:2, trimDays:5,
+    trim:"Deadhead constantly — snip every faded/brown flower down to the next bud or leaf. This is the #1 thing keeping it blooming all summer. There are a lot of spent blooms right now; give it a full pass." },
+  { id:"daisy",     name:"Daisy",            emoji:"🌼", loc:"outdoor", freq:"Morning — every 2 days, needs consistency. Make sure it is NOT sitting in water — the nursery basket inside the pot traps moisture (likely cause of the leaf stress, May 29)", days:2, trimDays:7,
+    trim:"Deadhead spent flowers at the base of the stem. Remove yellow/brown leaves. Best fix for the ongoing leaf stress: repot it into the terra cotta directly with proper drainage instead of the nursery basket." },
+  { id:"candytuft", name:"Candytuft",        emoji:"🌾", loc:"outdoor", freq:"Morning — every 3-4 days, fairly drought tolerant", days:3, trimDays:30,
+    trim:"Spring bloom is finishing (May 29) — shear the whole plant back by about a third now. This keeps it compact instead of leggy and can trigger a second flush of flowers." }];
 
 const GNAT_STEPS = [
   { id:"g_buy",   label:"Buy Mosquito Bits + yellow sticky traps" },
@@ -901,16 +899,16 @@ function waterStatus(p) {
 
 function switchTab(t) {
   currentTab=t;
-  ["today","wellness","timeline","rooms","garden","shopping","grocery","print"].forEach(v=>{
+  ["today","timeline","rooms","garden","shopping","grocery","print"].forEach(v=>{
     const el=document.getElementById("view-"+v);
     if(el) { el.style.display=v===t?"block":"none";
       if(v===t){ el.classList.remove("view-animate"); void el.offsetWidth; el.classList.add("view-animate"); } }
     const tb=document.getElementById("tab-"+v);
-    if(tb) {
-      const isSecondary=tb.classList.contains("tab-secondary");
-      tb.className="tab"+(isSecondary?" tab-secondary":"")+(v===t?" active":"");
-    }
+    if(tb) tb.className="tab"+(v===t?" active":"");
   });
+  // Timeline pill — show only when NOT in timeline
+  const tlBtn=document.getElementById("btn-timeline");
+  if(tlBtn) tlBtn.style.display=t==="timeline"?"none":"inline-block";
   renderAll();
 }
 
@@ -939,12 +937,18 @@ function updateHeader() {
   const dh=dailyHabits(),dpct=Math.round(dh.done/dh.total*100);
   document.getElementById("dailyFill").style.width=dpct+"%";
   const hp=document.getElementById("habitsPct"); if(hp) hp.textContent=dpct+"%";
-  // Garden trackers
+  // Garden trackers — count completed/total so finishing reads 5/5, not 0/0.
+  // (Watering a plant removes it from "due", so we union the still-due set with
+  //  whatever was already watered/trimmed today to get the real daily total.)
   const today=todayKey();
-  const wDue=plantsDueOn(today), wDone=wDue.filter(p=>watered[p.id]===today).length;
-  const tDue=plantsTrimDueOn(today), tDone=tDue.filter(p=>trimmed[p.id]===today).length;
-  const wt=document.getElementById("waterTracker"); if(wt) wt.textContent="💧 "+wDone+"/"+wDue.length;
-  const tt=document.getElementById("trimTracker"); if(tt) tt.textContent="✂️ "+tDone+"/"+tDue.length;
+  const wDoneToday=PLANTS.filter(p=>watered[p.id]===today);
+  const wIds=new Set([...plantsDueOn(today).map(p=>p.id), ...wDoneToday.map(p=>p.id)]);
+  const wt=document.getElementById("waterTracker");
+  if(wt) wt.textContent = wIds.size ? ("💧 "+wDoneToday.length+"/"+wIds.size) : "💧 ✓ none due";
+  const tDoneToday=PLANTS.filter(p=>p.trimDays&&trimmed[p.id]===today);
+  const tIds=new Set([...plantsTrimDueOn(today).map(p=>p.id), ...tDoneToday.map(p=>p.id)]);
+  const tt=document.getElementById("trimTracker");
+  if(tt) tt.textContent = tIds.size ? ("✂️ "+tDoneToday.length+"/"+tIds.size) : "✂️ ✓ none due";
 }
 
 function weedHTML() {
@@ -1482,7 +1486,11 @@ function renderGarden() {
   html += `<div class="today-date">${d.toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"})}</div>`;
 
   // ── TODAY'S WATERING ────────────────────────────────────────────────────────
-  const dueToday = plantsDueOn(today);
+  // Scheduled today = still-due plants + those already watered today (so the list
+  // and count stay stable as you check things off, ending at e.g. 5/5).
+  const wDoneIds = PLANTS.filter(p => watered[p.id] === today).map(p => p.id);
+  const dueSchedIds = new Set([...plantsDueOn(today).map(p => p.id), ...wDoneIds]);
+  const dueToday = PLANTS.filter(p => dueSchedIds.has(p.id));
   const wateredToday = dueToday.filter(p => watered[p.id] === today);
   if (dueToday.length) {
     html += `<div class="section-label">💧 Today's Watering — ${wateredToday.length}/${dueToday.length} done</div>`;
@@ -1495,7 +1503,7 @@ function renderGarden() {
       const days = daysSinceWatered(p.id);
       html += `<div class="plant-card">
         <div class="plant-top">
-          <div class="plant-emoji">${p.img?`<span style="display:inline-block;width:80px;height:80px;overflow:hidden;border-radius:10px;flex-shrink:0"><img src="${p.img}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentElement.outerHTML='<span style=\"font-size:28px\">${p.emoji}</span>'" /></span>`:p.emoji}</div>
+          <div class="plant-emoji">${p.emoji}</div>
           <div class="plant-info">
             <div class="plant-name">${p.name}</div>
             <div class="plant-freq">${p.freq}</div>
@@ -1514,7 +1522,9 @@ function renderGarden() {
   }
 
   // ── TODAY'S TRIMMING ────────────────────────────────────────────────────────
-  const trimDueToday = plantsTrimDueOn(today);
+  const tDoneIds = PLANTS.filter(p => p.trimDays && trimmed[p.id] === today).map(p => p.id);
+  const trimSchedIds = new Set([...plantsTrimDueOn(today).map(p => p.id), ...tDoneIds]);
+  const trimDueToday = PLANTS.filter(p => trimSchedIds.has(p.id));
   const trimmedToday = trimDueToday.filter(p => trimmed[p.id] === today);
   if (trimDueToday.length) {
     html += `<div class="section-label">✂️ Today's Trimming — ${trimmedToday.length}/${trimDueToday.length} done</div>`;
@@ -1566,11 +1576,10 @@ function renderGarden() {
       const btnClass = doneT ? "ok" : st;
       html += `<div class="plant-card">
         <div class="plant-top">
-          <div class="plant-emoji">${p.img?`<span style="display:inline-block;width:80px;height:80px;overflow:hidden;border-radius:10px;flex-shrink:0"><img src="${p.img}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentElement.outerHTML='<span style=\"font-size:28px\">${p.emoji}</span>'" /></span>`:p.emoji}</div>
+          <div class="plant-emoji">${p.emoji}</div>
           <div class="plant-info">
             <div class="plant-name">${p.name}</div>
             <div class="plant-freq">${p.freq}</div>
-            ${p.note?`<div style="font-size:11px;color:rgba(255,200,100,.75);font-family:'Lora',serif;margin-top:4px;font-style:italic;line-height:1.4">${p.note}</div>`:""}
             ${p.overwater?`<div class="plant-badges"><span class="overwater-badge">⚠️ overwater risk</span></div>`:""}
           </div>
           <div class="plant-status">
@@ -1598,61 +1607,8 @@ function renderGarden() {
     ${gnatDone===GNAT_STEPS.length?`<div style="margin-top:12px;font-size:13px;color:var(--green);font-style:italic;text-align:center">✨ Gnat-free! Keep letting soil dry between waterings.</div>`:""}
   </div>`;
 
-  // ── PLANT OF THE WEEK ──────────────────────────────────────────────────────
-  const SPOTLIGHT = [
-    { id:"basil1",        tip:"Pinch every flower bud immediately — once basil bolts, leaves turn bitter. Cut just above a leaf pair each week to keep it bushy." },
-    { id:"tomato",        tip:"Water at the base every morning. As fruits swell, back off slightly — mild stress concentrates sugars. Flowers dropping petals means fruiting started." },
-    { id:"cherry_tomato", tip:"Check daily once fruits start blushing — they split if left too long. Harvest promptly and the plant pushes out more clusters." },
-    { id:"philodendron",  tip:"Still on gnat hold — let it go completely bone dry. When you water again, water deeply then wait. Wipe dusty leaves monthly." },
-    { id:"parsley",       tip:"Harvest outer stems at the base and leave the young inner growth. Never take more than half. Each harvest signals more production." },
-    { id:"jalapeno",      tip:"Less water = hotter pepper. Let the top 2 inches dry completely. Pick at 3-4 inches, firm and dark green, for best heat." },
-    { id:"mint",          tip:"Harvest aggressively — unpicked mint gets woody. Pinch flower buds immediately. Cut stems back by half if leggy." },
-    { id:"jade",          tip:"Extremely drought tolerant — the gnat hold is fine for 3+ weeks. Water only when leaves start to lose their firm, waxy look." }
-  ];
-  const weekNum = Math.floor(Date.now() / (7 * 24 * 3600 * 1000));
-  const spot = SPOTLIGHT[weekNum % SPOTLIGHT.length];
-  const spotPlant = PLANTS.find(p => p.id === spot.id) || PLANTS[0];
-  html += `<div class="section-label">🌱 Plant of the Week</div>
-  <div style="background:linear-gradient(135deg,rgba(45,184,112,.11),rgba(45,184,112,.03));border:1px solid rgba(45,184,112,.26);border-radius:var(--rad);padding:18px;margin-bottom:14px;position:relative;overflow:hidden">
-    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(45,184,112,.55),transparent)"></div>
-    <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
-      <div style="font-size:44px;line-height:1">${spotPlant.emoji}</div>
-      <div>
-        <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(45,184,112,.65);font-family:'Lora',serif;margin-bottom:3px">This Week</div>
-        <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--text)">${spotPlant.name}</div>
-        <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;font-style:italic;text-transform:capitalize;margin-top:1px">${spotPlant.loc}</div>
-      </div>
-    </div>
-    <div style="background:rgba(0,0,0,.22);border-radius:9px;padding:11px 13px;font-size:13px;color:rgba(237,229,248,.82);font-family:'Lora',serif;line-height:1.65;border-left:3px solid rgba(45,184,112,.4)">💡 ${spot.tip}</div>
-    <div style="margin-top:9px;font-size:11px;color:rgba(45,184,112,.5);font-family:'Lora',serif;font-style:italic">${spotPlant.freq.split('. ')[0]}</div>
-  </div>`;
-
-  // ── HARVEST COUNTDOWN ───────────────────────────────────────────────────────
-  const HARVESTS = [
-    { label:"Parsley",         emoji:"🌿", date:"2026-06-05", note:"Outer stems at base, leave inner" },
-    { label:"Jalapeño",        emoji:"🌶️", date:"2026-07-10", note:"3-4 in, firm, dark green" },
-    { label:"Cherry Tomatoes", emoji:"🍒", date:"2026-07-15", note:"Check daily once blushing" },
-    { label:"Heirloom Tomato", emoji:"🍅", date:"2026-07-20", note:"Deep red, slightly soft" }
-  ];
-  const todayDate = new Date(today + "T12:00:00");
-  html += `<div class="section-label">🍅 Harvest Countdown</div>`;
-  HARVESTS.forEach(h => {
-    const diff = Math.ceil((new Date(h.date+"T12:00:00") - todayDate) / 86400000);
-    const past = diff < 0, soon = diff >= 0 && diff <= 10;
-    html += `<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;margin-bottom:7px;border-radius:var(--radsm);background:${soon&&!past?"rgba(45,184,112,.07)":"rgba(255,255,255,.02)"};border:1px solid ${soon&&!past?"rgba(45,184,112,.22)":"rgba(255,255,255,.05)"}">
-      <div style="font-size:22px">${h.emoji}</div>
-      <div style="flex:1"><div style="font-size:13px;color:var(--text);font-family:'Lora',serif;font-weight:700">${h.label}</div>
-        <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;font-style:italic">${h.note}</div></div>
-      <div style="text-align:right;flex-shrink:0">
-        <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:${past?"var(--green)":soon?"#4ADE80":"var(--amber2)"}">${past?"Due now":soon&&diff===0?"Today!":soon?diff+"d 🔥":diff+"d"}</div>
-        <div style="font-size:9px;color:var(--text2);font-family:'Lora',serif">${h.date}</div>
-      </div>
-    </div>`;
-  });
-
   el.innerHTML = html;
 }
-
 
 
 function renderShopping() {
@@ -1871,15 +1827,15 @@ function renderPrint() {
       ${PRINT_SCHEDULE.map(p => {
         const done = !!funPrints[p.id];
         const isMW = p.src === 'MakerWorld';
-        return `<div onclick="toggleFunPrint('\${p.id}')" style="display:flex;align-items:flex-start;gap:12px;padding:11px 13px;margin-bottom:7px;border-radius:12px;background:\${done?'rgba(192,132,252,.12)':'rgba(255,255,255,.03)'};border:1px solid \${done?'rgba(192,132,252,.35)':'rgba(255,255,255,.07)'};cursor:pointer;transition:all .2s">
-          <div style="width:22px;height:22px;border-radius:6px;border:2px solid \${done?'#c084fc':'rgba(255,255,255,.2)'};background:\${done?'#c084fc':'transparent'};flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px">\${done?'✓':''}</div>
+        return `<div onclick="toggleFunPrint('${p.id}')" style="display:flex;align-items:flex-start;gap:12px;padding:11px 13px;margin-bottom:7px;border-radius:12px;background:${done?'rgba(192,132,252,.12)':'rgba(255,255,255,.03)'};border:1px solid ${done?'rgba(192,132,252,.35)':'rgba(255,255,255,.07)'};cursor:pointer;transition:all .2s">
+          <div style="width:22px;height:22px;border-radius:6px;border:2px solid ${done?'#c084fc':'rgba(255,255,255,.2)'};background:${done?'#c084fc':'transparent'};flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px">${done?'&#10003;':''}</div>
           <div style="flex:1;min-width:0">
             <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
-              <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);font-family:'Lora',serif;flex-shrink:0">Day \${p.day}</div>
-              <div style="font-size:13px;font-weight:700;color:\${done?'#c084fc':'var(--text)'};\${done?'text-decoration:line-through;opacity:.7':''}">\${p.emoji} \${p.name}</div>
-              \${isMW?'<div style="font-size:8px;padding:2px 6px;border-radius:10px;background:rgba(99,102,241,.2);color:#818CF8;font-family:\'Lora\',serif;letter-spacing:.05em;flex-shrink:0">MakerWorld</div>':''}
+              <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);font-family:'Lora',serif;flex-shrink:0">Day ${p.day}</div>
+              <div style="font-size:13px;font-weight:700;color:${done?'#c084fc':'var(--text)'};${done?'text-decoration:line-through;opacity:.7':''}">${p.emoji} ${p.name}</div>
+              ${isMW?'<div style="font-size:8px;padding:2px 6px;border-radius:10px;background:rgba(99,102,241,.2);color:#818CF8;font-family:\'Lora\',serif;letter-spacing:.05em;flex-shrink:0">MakerWorld</div>':''}
             </div>
-            <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;margin-top:3px">\${p.note}</div>
+            <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;margin-top:3px">${p.note}</div>
           </div>
         </div>`;
       }).join('')}
@@ -1933,6 +1889,48 @@ function renderPrint() {
     <!-- NOTES -->
     <div style="background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:12px 14px;margin-top:6px">
       <div style="font-size:11px;color:rgba(251,191,36,.9);font-weight:700;margin-bottom:5px">⚠️ Print Material Note</div>
+      <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;font-style:italic">2020 aluminum · 3mm acrylic · carbon exhaust · 35–40°C target</div>
+    </div>
+
+    <!-- PROGRESS BANNER -->
+    <div style="background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.25);border-radius:14px;padding:14px 16px;margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:${orange};font-family:'Lora',serif">Build Progress</div>
+        <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:${doneSt===ENC_STEPS.length?green:orange}">${doneSt}/${ENC_STEPS.length} steps · ${pct}%</div>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border-radius:6px;height:6px;overflow:hidden">
+        <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,${orange},${amber});border-radius:6px;transition:width .3s"></div>
+      </div>
+      ${doneSt===ENC_STEPS.length?`<div style="margin-top:8px;font-size:12px;color:${green};font-style:italic;text-align:center">🎉 Enclosure complete — enjoy those perfect PETG prints!</div>`:''}
+    </div>
+
+    <!-- SPECS -->
+    <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text2);font-family:'Lora',serif;margin:0 0 10px">⚙️ Specifications</div>
+    <div class="print-spec-grid">
+      ${specCard('Printer','Sovol SV06 Plus')}
+      ${specCard('Frame','2020 Al Extrusion')}
+      ${specCard('Interior Min','600 × 560 × 700mm')}
+      ${specCard('Panels','3mm Acrylic Sheet')}
+      ${specCard('Target Temp','35 – 40°C')}
+      ${specCard('Exhaust','Fan + Carbon Filter')}
+    </div>
+
+    <!-- RESOURCES -->
+    <div style="background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);border-radius:12px;padding:12px 14px;margin-bottom:18px;display:flex;gap:12px;align-items:center">
+      <div style="font-size:20px">🔍</div>
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px">Find a Design on Printables</div>
+        <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif">Search <span style="color:#818CF8;font-style:italic">"SV06 enclosure"</span> or <span style="color:#818CF8;font-style:italic">"SV06 Plus enclosure 2020"</span> — filter by Most Liked. Look for corner bracket + panel clip combo with cable passthrough included.</div>
+      </div>
+    </div>
+
+    <!-- BUILD STEPS -->
+    <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text2);font-family:'Lora',serif;margin:0 0 10px">🔧 Build Steps</div>
+    ${ENC_STEPS.map(stepCard).join('')}
+
+    <!-- NOTES -->
+    <div style="background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:12px 14px;margin-top:6px">
+      <div style="font-size:11px;color:rgba(251,191,36,.9);font-weight:700;margin-bottom:5px">⚠️ Print Material Note</div>
       <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;line-height:1.6">Print brackets and clips in <strong style="color:var(--text)">PETG or ABS</strong> — not PLA. Enclosure interiors can reach 45°C+ during ABS prints and PLA will warp and fail. PETG handles up to ~80°C and is easy to print on the SV06 Plus.</div>
     </div>
   `;
@@ -1942,102 +1940,9 @@ function renderPrint() {
   const fpBarEl = document.getElementById('fpBar'); if(fpBarEl) fpBarEl.style.width = Math.round(fpDone/14*100)+'%';
 }
 
-
-
-// ── WELLNESS HELPERS ──────────────────────────────────────────────────────────
-function toggleWellness(key) {
-  const k = "well-" + key + "-" + todayKey();
-  laundry[k] = !laundry[k];
-  saveLaundry();
-  renderAll();
-}
-function logPain(val) {
-  const log = JSON.parse(localStorage.getItem("painlog")||"{}");
-  log[todayKey()] = val;
-  localStorage.setItem("painlog", JSON.stringify(log));
-  renderAll();
-}
-
-// ── WELLNESS TAB ──────────────────────────────────────────────────────────────
-function renderWellness() {
-  const el = document.getElementById("view-wellness");
-  const today = todayKey();
-  const log   = JSON.parse(localStorage.getItem("painlog")||"{}");
-  let out = "";
-
-  // ── Litfulo med reminder ──
-  const litDone = !!laundry["well-litfulo-"+today];
-  out += `<div class="section-label">💊 Medications</div>
-  <div onclick="toggleWellness('litfulo')" style="background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(99,102,241,.03));border:1px solid rgba(99,102,241,.${litDone?"15":"3"});border-radius:var(--rad);padding:16px 18px;margin-bottom:14px;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(99,102,241,.08)">
-    <div style="display:flex;align-items:center;gap:14px">
-      <div style="font-size:30px;flex-shrink:0">${litDone?"✅":"💊"}</div>
-      <div style="flex:1">
-        <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:${litDone?"var(--text3)":"var(--text)"};${litDone?"text-decoration:line-through":""}">Litfulo (ritlecitinib)</div>
-        <div style="font-size:12px;color:var(--text2);font-family:'Lora',serif;margin-top:3px">Take daily · JAK inhibitor for alopecia areata · Currently refilling</div>
-        <div style="font-size:11px;color:rgba(99,102,241,.7);font-family:'Lora',serif;margin-top:3px;font-style:italic">Missing doses may worsen symptoms — stay consistent when refill arrives</div>
-      </div>
-      <div style="width:26px;height:26px;border-radius:50%;border:2px solid ${litDone?"#10B981":"rgba(99,102,241,.5)"};background:${litDone?"#10B981":"transparent"};display:flex;align-items:center;justify-content:center;color:#000;font-weight:900;font-size:12px;flex-shrink:0;transition:all .25s cubic-bezier(.34,1.56,.64,1)">${litDone?"✓":""}</div>
-    </div>
-  </div>`;
-
-  // ── Sleep setup checklist ──
-  const SLEEP_ITEMS = [
-    { key:"knees",   label:"Pillow under knees",                   note:"Tilts pelvis, reduces pressure on glutes and buttock joint" },
-    { key:"arms",    label:"Arms at sides, wrists straight",        note:"Not curled under, not overhead" },
-    { key:"neck",    label:"Pillow keeps neck level with spine",     note:"Not too high, not flat" },
-    { key:"side",    label:"If on side: pillow between knees",       note:"Keeps hips stacked; hug a pillow so shoulder stays neutral" },
-  ];
-  const sleepDone = SLEEP_ITEMS.filter(s => !!laundry["well-sleep-"+s.key+"-"+today]).length;
-  out += `<div class="section-label">🛌 Sleep Setup — ${sleepDone}/${SLEEP_ITEMS.length} ready</div>
-  <div style="background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.18);border-radius:var(--rad);padding:14px 16px;margin-bottom:14px">
-    ${SLEEP_ITEMS.map(s => {
-      const done = !!laundry["well-sleep-"+s.key+"-"+today];
-      return `<div onclick="toggleWellness('sleep-${s.key}')" style="display:flex;align-items:flex-start;gap:11px;padding:9px 2px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer">
-        <div style="width:20px;height:20px;border-radius:6px;border:1.5px solid ${done?"#8B5CF6":"rgba(139,92,246,.3)"};background:${done?"rgba(139,92,246,.2)":"transparent"};flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#A78BFA;font-weight:900;margin-top:1px;transition:all .2s">${done?"✓":""}</div>
-        <div style="flex:1"><div style="font-size:13px;color:${done?"var(--text3)":"var(--text)"};font-family:'Lora',serif;${done?"text-decoration:line-through":""}">${s.label}</div>
-          <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;margin-top:1px;font-style:italic">${s.note}</div></div>
-      </div>`;
-    }).join("")}
-  </div>`;
-
-  // ── Pain log ──
-  const todayPain = log[today];
-  const PAIN_OPTS = [
-    { val:"good", label:"😌 Good",  col:"#2DB870", bg:"rgba(45,184,112,.12)" },
-    { val:"sore", label:"😬 Sore",  col:"#F59E0B", bg:"rgba(245,158,11,.12)" },
-    { val:"bad",  label:"😖 Bad",   col:"#EF4444", bg:"rgba(239,68,68,.12)"  },
-  ];
-  out += `<div class="section-label">📊 How Are You Feeling Today?</div>
-  <div style="background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:var(--rad);padding:16px 18px;margin-bottom:14px">
-    <div style="display:flex;gap:10px;margin-bottom:${todayPain?"14px":"0"}">
-      ${PAIN_OPTS.map(o => `<button onclick="logPain('${o.val}')" style="flex:1;padding:12px 0;border-radius:10px;background:${todayPain===o.val?o.bg:"rgba(255,255,255,.04)"};border:1.5px solid ${todayPain===o.val?o.col:"rgba(255,255,255,.1)"};color:${todayPain===o.val?o.col:"var(--text2)"};cursor:pointer;font-family:'Lora',serif;font-size:13px;font-weight:${todayPain===o.val?"700":"400"};transition:all .2s">${o.label}</button>`).join("")}
-    </div>
-    ${todayPain ? `<div style="font-size:12px;color:var(--text2);font-family:'Lora',serif;font-style:italic;text-align:center">Logged for ${today} — tap to change</div>` : ""}
-  </div>`;
-
-  // ── Doctor visit notes ──
-  out += `<div class="section-label">🏥 Doctor Visit Notes — May 28, 2026</div>
-  <div style="background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.15);border-radius:var(--rad);padding:16px 18px;margin-bottom:14px">
-    <div style="font-size:12px;color:rgba(56,189,248,.9);font-family:'Lora',serif;font-weight:700;margin-bottom:10px">Key Symptom Summary</div>
-    ${[
-      ["Current", "Aching pain both arms (wrists, shoulder blade area), both hands/wrists symmetric, buttock joint area, feeling run down"],
-      ["Pattern", "Started left-sided after sleep, spread to both sides over one day. Worse after rest. Previously always left side only."],
-      ["Background", "On Litfulo (ritlecitinib, JAK inhibitor) for alopecia — recently ran out. Was recently sick. Desk job, sit/stand desk."],
-      ["Red flags cleared", "No chest pain, no shortness of breath, no numbness or weakness, no shooting leg pain."],
-      ["Questions", "Symmetric joint pain cause? Viral contribution? Litfulo interaction or rebound? Infection risk from immunosuppression? Labs/imaging?"]
-    ].map(([label, text]) => `<div style="margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid rgba(255,255,255,.05)">
-      <div style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(56,189,248,.5);font-family:'Lora',serif;margin-bottom:3px">${label}</div>
-      <div style="font-size:12px;color:var(--text2);font-family:'Lora',serif;line-height:1.55">${text}</div>
-    </div>`).join("")}
-  </div>`;
-
-  el.innerHTML = out;
-}
-
 function renderAll() {
   updateHeader();
   if(currentTab==="today")    renderToday();
-  if(currentTab==="wellness") renderWellness();
   if(currentTab==="timeline") renderTimeline();
   if(currentTab==="rooms")    renderRooms();
   if(currentTab==="garden")   renderGarden();
@@ -2051,6 +1956,8 @@ function showApp() {
   const el = document.getElementById('fb-loading');
   if (el) el.remove();
   autoCarryOverdue();
+  const tlBtn=document.getElementById("btn-timeline");
+  if(tlBtn&&currentTab!=="timeline") tlBtn.style.display="inline-block";
   renderAll();
 }
 
