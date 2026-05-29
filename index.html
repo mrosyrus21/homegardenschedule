@@ -1208,6 +1208,7 @@ function renderToday() {
   let dbs=!!laundry["evening-bedshower-"+today]; hab(1252, strip("🚿","Before bed shower",dbs,"#06B6D4","toggleEvening('bedshower')","Night","10 min"), dbs);
   let d7=!!laundry["teeth-night-"+today]; hab(1260, strip("🪥","Brush teeth — night",d7,"#0891B2","toggleTeeth('night')","Night","2 min"), d7);
   hab(1270, passive("😴","Bedtime — 11:00 PM","#8B5CF6","Night","–","Consistent sleep time is the single biggest lever for sleep quality"), false);
+  hab(1280, passive("🛌","Sleep Position Setup","#8B5CF6","Night","–","For shoulder/arm, wrists, and buttock joint issues — sleep on your back with strategic pillow support.<br><br><strong>BEST — On your back:</strong><br>• Pillow under knees (tilts pelvis, takes pressure off glutes and buttock joint)<br>• Arms at sides, wrists straight — not curled under, not overhead<br>• Pillow that keeps neck level with spine<br><br><strong>ACCEPTABLE — On your side (non-painful side):</strong><br>• Pillow between knees to keep hips stacked<br>• Hug a pillow with top arm so shoulder isn't dragged forward, wrist stays neutral<br>• Never lie on sore shoulder or tuck hand under pillow/head<br><br><strong>AVOID:</strong><br>• Stomach sleeping (cranks neck, strains shoulders/wrists)<br>• Any arm trapped overhead or pinned under body<br>• The couch<br><br><strong>KEY INSIGHT:</strong> Start in a fully supported neutral position so motionless hours don't pinch anything. Set up pillows BEFORE lying down."), false);
 
   // ── HELPER: push each task as individual strip ────────────────────────────────
   function pushTaskCards(groupIds,badgeType){
@@ -1953,38 +1954,4 @@ ST.on('value', snap => {
   waterPushed = d.waterPushed || {};
   expanded    = d.expanded    || {};
   trimmed     = d.trimmed     || {};
-  shopping    = d.shopping    || {};
-  funPrints   = d.funPrints   || {};
-  const flags = d.flags       || {};
-
-  // One-time: initial plant watering baseline
-  if (!flags['garden-init-v1']) {
-    PLANTS.forEach(p => { if (!watered[p.id]) watered[p.id] = '2026-05-13'; });
-    ST.update({ watered, 'flags/garden-init-v1': 'done' });
-    return;
-  }
-  // One-time: rain 2026-05-17
-  if (!flags['rain-2026-05-17']) {
-    PLANTS.filter(p => p.loc === "outdoor").forEach(p => { if (!watered[p.id] || watered[p.id] < "2026-05-17") watered[p.id] = "2026-05-17"; });
-    ST.update({ watered, 'flags/rain-2026-05-17': '1' });
-    return;
-  }
-  // One-time: rain 2026-05-18
-  if (!flags['rain-2026-05-18']) {
-    PLANTS.filter(p => p.loc === "outdoor").forEach(p => { watered[p.id] = "2026-05-18"; });
-    ST.update({ watered, 'flags/rain-2026-05-18': '1' });
-    return;
-  }
-
-  clearTimeout(fbTimeout);
-  showApp();
-});
-
-ST.on('value', () => {}, err => {
-  console.warn('Firebase error:', err);
-  clearTimeout(fbTimeout);
-  showApp();
-});
-</script>
-</body>
-</html>
+  shopping    = d
