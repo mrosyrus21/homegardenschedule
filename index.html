@@ -1807,17 +1807,17 @@ function renderPrint() {
       ${PRINT_SCHEDULE.map(p => {
         const done = !!funPrints[p.id];
         const isMW = p.src === 'MakerWorld';
-        return `<div onclick="toggleFunPrint('${p.id}')" style="display:flex;align-items:flex-start;gap:12px;padding:11px 13px;margin-bottom:7px;border-radius:12px;background:${done?'rgba(192,132,252,.12)':'rgba(255,255,255,.03)'};border:1px solid ${done?'rgba(192,132,252,.35)':'rgba(255,255,255,.07)'};cursor:pointer;transition:all .2s">
-          <div style="width:22px;height:22px;border-radius:6px;border:2px solid ${done?'#c084fc':'rgba(255,255,255,.2)'};background:${done?'#c084fc':'transparent'};flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px">${done?'&#10003;':''}</div>
+        return \`<div onclick="toggleFunPrint('\${p.id}')" style="display:flex;align-items:flex-start;gap:12px;padding:11px 13px;margin-bottom:7px;border-radius:12px;background:\${done?'rgba(192,132,252,.12)':'rgba(255,255,255,.03)'};border:1px solid \${done?'rgba(192,132,252,.35)':'rgba(255,255,255,.07)'};cursor:pointer;transition:all .2s">
+          <div style="width:22px;height:22px;border-radius:6px;border:2px solid \${done?'#c084fc':'rgba(255,255,255,.2)'};background:\${done?'#c084fc':'transparent'};flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px">\${done?'✓':''}</div>
           <div style="flex:1;min-width:0">
             <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
-              <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);font-family:'Lora',serif;flex-shrink:0">Day ${p.day}</div>
-              <div style="font-size:13px;font-weight:700;color:${done?'#c084fc':'var(--text)'};${done?'text-decoration:line-through;opacity:.7':''}">${p.emoji} ${p.name}</div>
-              ${isMW?'<div style="font-size:8px;padding:2px 6px;border-radius:10px;background:rgba(99,102,241,.2);color:#818CF8;font-family:\'Lora\',serif;letter-spacing:.05em;flex-shrink:0">MakerWorld</div>':''}
+              <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);font-family:'Lora',serif;flex-shrink:0">Day \${p.day}</div>
+              <div style="font-size:13px;font-weight:700;color:\${done?'#c084fc':'var(--text)'};\${done?'text-decoration:line-through;opacity:.7':''}">\${p.emoji} \${p.name}</div>
+              \${isMW?'<div style="font-size:8px;padding:2px 6px;border-radius:10px;background:rgba(99,102,241,.2);color:#818CF8;font-family:\'Lora\',serif;letter-spacing:.05em;flex-shrink:0">MakerWorld</div>':''}
             </div>
-            <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;margin-top:3px">${p.note}</div>
+            <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;margin-top:3px">\${p.note}</div>
           </div>
-        </div>`;
+        </div>\`;
       }).join('')}
     </div>
 
@@ -1827,48 +1827,6 @@ function renderPrint() {
     <div style="text-align:center;margin-bottom:20px;padding-top:4px">
       <div style="font-size:9px;letter-spacing:.25em;color:${orange};text-transform:uppercase;font-family:'Lora',serif;margin-bottom:6px">🖨️ 3D Print Lab · Sovol SV06 Plus</div>
       <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;background:linear-gradient(135deg,${orange},${amber});-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px">Enclosure Build</div>
-      <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;font-style:italic">2020 aluminum · 3mm acrylic · carbon exhaust · 35–40°C target</div>
-    </div>
-
-    <!-- PROGRESS BANNER -->
-    <div style="background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.25);border-radius:14px;padding:14px 16px;margin-bottom:18px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:${orange};font-family:'Lora',serif">Build Progress</div>
-        <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:${doneSt===ENC_STEPS.length?green:orange}">${doneSt}/${ENC_STEPS.length} steps · ${pct}%</div>
-      </div>
-      <div style="background:rgba(255,255,255,.06);border-radius:6px;height:6px;overflow:hidden">
-        <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,${orange},${amber});border-radius:6px;transition:width .3s"></div>
-      </div>
-      ${doneSt===ENC_STEPS.length?`<div style="margin-top:8px;font-size:12px;color:${green};font-style:italic;text-align:center">🎉 Enclosure complete — enjoy those perfect PETG prints!</div>`:''}
-    </div>
-
-    <!-- SPECS -->
-    <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text2);font-family:'Lora',serif;margin:0 0 10px">⚙️ Specifications</div>
-    <div class="print-spec-grid">
-      ${specCard('Printer','Sovol SV06 Plus')}
-      ${specCard('Frame','2020 Al Extrusion')}
-      ${specCard('Interior Min','600 × 560 × 700mm')}
-      ${specCard('Panels','3mm Acrylic Sheet')}
-      ${specCard('Target Temp','35 – 40°C')}
-      ${specCard('Exhaust','Fan + Carbon Filter')}
-    </div>
-
-    <!-- RESOURCES -->
-    <div style="background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);border-radius:12px;padding:12px 14px;margin-bottom:18px;display:flex;gap:12px;align-items:center">
-      <div style="font-size:20px">🔍</div>
-      <div>
-        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px">Find a Design on Printables</div>
-        <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif">Search <span style="color:#818CF8;font-style:italic">"SV06 enclosure"</span> or <span style="color:#818CF8;font-style:italic">"SV06 Plus enclosure 2020"</span> — filter by Most Liked. Look for corner bracket + panel clip combo with cable passthrough included.</div>
-      </div>
-    </div>
-
-    <!-- BUILD STEPS -->
-    <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text2);font-family:'Lora',serif;margin:0 0 10px">🔧 Build Steps</div>
-    ${ENC_STEPS.map(stepCard).join('')}
-
-    <!-- NOTES -->
-    <div style="background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:12px 14px;margin-top:6px">
-      <div style="font-size:11px;color:rgba(251,191,36,.9);font-weight:700;margin-bottom:5px">⚠️ Print Material Note</div>
       <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;font-style:italic">2020 aluminum · 3mm acrylic · carbon exhaust · 35–40°C target</div>
     </div>
 
@@ -1954,4 +1912,38 @@ ST.on('value', snap => {
   waterPushed = d.waterPushed || {};
   expanded    = d.expanded    || {};
   trimmed     = d.trimmed     || {};
-  shopping    = d
+  shopping    = d.shopping    || {};
+  funPrints   = d.funPrints   || {};
+  const flags = d.flags       || {};
+
+  // One-time: initial plant watering baseline
+  if (!flags['garden-init-v1']) {
+    PLANTS.forEach(p => { if (!watered[p.id]) watered[p.id] = '2026-05-13'; });
+    ST.update({ watered, 'flags/garden-init-v1': 'done' });
+    return;
+  }
+  // One-time: rain 2026-05-17
+  if (!flags['rain-2026-05-17']) {
+    PLANTS.filter(p => p.loc === "outdoor").forEach(p => { if (!watered[p.id] || watered[p.id] < "2026-05-17") watered[p.id] = "2026-05-17"; });
+    ST.update({ watered, 'flags/rain-2026-05-17': '1' });
+    return;
+  }
+  // One-time: rain 2026-05-18
+  if (!flags['rain-2026-05-18']) {
+    PLANTS.filter(p => p.loc === "outdoor").forEach(p => { watered[p.id] = "2026-05-18"; });
+    ST.update({ watered, 'flags/rain-2026-05-18': '1' });
+    return;
+  }
+
+  clearTimeout(fbTimeout);
+  showApp();
+});
+
+ST.on('value', () => {}, err => {
+  console.warn('Firebase error:', err);
+  clearTimeout(fbTimeout);
+  showApp();
+});
+</script>
+</body>
+</html>
