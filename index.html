@@ -1868,4 +1868,123 @@ function renderPrint() {
     <!-- NOTES -->
     <div style="background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:12px 14px;margin-top:6px">
       <div style="font-size:11px;color:rgba(251,191,36,.9);font-weight:700;margin-bottom:5px">⚠️ Print Material Note</div>
-      <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;line-height:1.6">Print brackets and clips in <strong style="color:var(--text
+      <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;font-style:italic">2020 aluminum · 3mm acrylic · carbon exhaust · 35–40°C target</div>
+    </div>
+
+    <!-- PROGRESS BANNER -->
+    <div style="background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.25);border-radius:14px;padding:14px 16px;margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:${orange};font-family:'Lora',serif">Build Progress</div>
+        <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:${doneSt===ENC_STEPS.length?green:orange}">${doneSt}/${ENC_STEPS.length} steps · ${pct}%</div>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border-radius:6px;height:6px;overflow:hidden">
+        <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,${orange},${amber});border-radius:6px;transition:width .3s"></div>
+      </div>
+      ${doneSt===ENC_STEPS.length?`<div style="margin-top:8px;font-size:12px;color:${green};font-style:italic;text-align:center">🎉 Enclosure complete — enjoy those perfect PETG prints!</div>`:''}
+    </div>
+
+    <!-- SPECS -->
+    <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text2);font-family:'Lora',serif;margin:0 0 10px">⚙️ Specifications</div>
+    <div class="print-spec-grid">
+      ${specCard('Printer','Sovol SV06 Plus')}
+      ${specCard('Frame','2020 Al Extrusion')}
+      ${specCard('Interior Min','600 × 560 × 700mm')}
+      ${specCard('Panels','3mm Acrylic Sheet')}
+      ${specCard('Target Temp','35 – 40°C')}
+      ${specCard('Exhaust','Fan + Carbon Filter')}
+    </div>
+
+    <!-- RESOURCES -->
+    <div style="background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);border-radius:12px;padding:12px 14px;margin-bottom:18px;display:flex;gap:12px;align-items:center">
+      <div style="font-size:20px">🔍</div>
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px">Find a Design on Printables</div>
+        <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif">Search <span style="color:#818CF8;font-style:italic">"SV06 enclosure"</span> or <span style="color:#818CF8;font-style:italic">"SV06 Plus enclosure 2020"</span> — filter by Most Liked. Look for corner bracket + panel clip combo with cable passthrough included.</div>
+      </div>
+    </div>
+
+    <!-- BUILD STEPS -->
+    <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text2);font-family:'Lora',serif;margin:0 0 10px">🔧 Build Steps</div>
+    ${ENC_STEPS.map(stepCard).join('')}
+
+    <!-- NOTES -->
+    <div style="background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:12px 14px;margin-top:6px">
+      <div style="font-size:11px;color:rgba(251,191,36,.9);font-weight:700;margin-bottom:5px">⚠️ Print Material Note</div>
+      <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;line-height:1.6">Print brackets and clips in <strong style="color:var(--text)">PETG or ABS</strong> — not PLA. Enclosure interiors can reach 45°C+ during ABS prints and PLA will warp and fail. PETG handles up to ~80°C and is easy to print on the SV06 Plus.</div>
+    </div>
+  `;
+  // Update fun print progress bar
+  const fpDone = PRINT_SCHEDULE.filter(p => funPrints[p.id]).length;
+  const fpEl = document.getElementById('fpPct'); if(fpEl) fpEl.textContent = fpDone+'/14';
+  const fpBarEl = document.getElementById('fpBar'); if(fpBarEl) fpBarEl.style.width = Math.round(fpDone/14*100)+'%';
+}
+
+function renderAll() {
+  updateHeader();
+  if(currentTab==="today")    renderToday();
+  if(currentTab==="timeline") renderTimeline();
+  if(currentTab==="rooms")    renderRooms();
+  if(currentTab==="garden")   renderGarden();
+  if(currentTab==="shopping") renderShopping();
+  if(currentTab==="grocery")  renderGrocery();
+  if(currentTab==="print")    renderPrint();
+}
+
+// ── FIREBASE REAL-TIME LISTENER ──────────────────────────────────────────────
+function showApp() {
+  const el = document.getElementById('fb-loading');
+  if (el) el.remove();
+  autoCarryOverdue();
+  const tlBtn=document.getElementById("btn-timeline");
+  if(tlBtn&&currentTab!=="timeline") tlBtn.style.display="inline-block";
+  renderAll();
+}
+
+// Fallback: show app after 6 seconds even if Firebase is slow
+const fbTimeout = setTimeout(showApp, 6000);
+
+ST.on('value', snap => {
+  const d = snap.val() || {};
+  checked     = d.checked     || {};
+  laundry     = d.laundry     || {};
+  watered     = d.watered     || {};
+  gnat        = d.gnat        || {};
+  pushed      = d.pushed      || {};
+  waterPushed = d.waterPushed || {};
+  expanded    = d.expanded    || {};
+  trimmed     = d.trimmed     || {};
+  shopping    = d.shopping    || {};
+  funPrints   = d.funPrints   || {};
+  const flags = d.flags       || {};
+
+  // One-time: initial plant watering baseline
+  if (!flags['garden-init-v1']) {
+    PLANTS.forEach(p => { if (!watered[p.id]) watered[p.id] = '2026-05-13'; });
+    ST.update({ watered, 'flags/garden-init-v1': 'done' });
+    return;
+  }
+  // One-time: rain 2026-05-17
+  if (!flags['rain-2026-05-17']) {
+    PLANTS.filter(p => p.loc === "outdoor").forEach(p => { if (!watered[p.id] || watered[p.id] < "2026-05-17") watered[p.id] = "2026-05-17"; });
+    ST.update({ watered, 'flags/rain-2026-05-17': '1' });
+    return;
+  }
+  // One-time: rain 2026-05-18
+  if (!flags['rain-2026-05-18']) {
+    PLANTS.filter(p => p.loc === "outdoor").forEach(p => { watered[p.id] = "2026-05-18"; });
+    ST.update({ watered, 'flags/rain-2026-05-18': '1' });
+    return;
+  }
+
+  clearTimeout(fbTimeout);
+  showApp();
+});
+
+ST.on('value', () => {}, err => {
+  console.warn('Firebase error:', err);
+  clearTimeout(fbTimeout);
+  showApp();
+});
+</script>
+</body>
+</html>
