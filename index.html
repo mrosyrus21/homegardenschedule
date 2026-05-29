@@ -128,6 +128,7 @@ body::after{
 
 /* Tabs */
 .tabs{display:flex;margin-top:8px;gap:0;position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.04)}
+.tabs-secondary{display:flex;gap:0;position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.03);background:rgba(0,0,0,.12)}
 .tab{
   flex:1;background:none;border:none;cursor:pointer;
   padding:10px 0 9px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
@@ -137,10 +138,9 @@ body::after{
 .tab::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;border-radius:2px;transition:width .25s cubic-bezier(.4,0,.2,1)}
 .tab.active::after{width:70%;background:linear-gradient(90deg,rgba(240,168,32,.0),rgba(240,168,32,1),rgba(240,168,32,.0))}
 .tab.active{color:var(--amber2);text-shadow:0 0 14px rgba(240,168,32,.5);border-bottom:2px solid transparent}
-/* Secondary tabs */
-.tab-secondary{flex:0 0 auto;padding:8px 10px 7px;font-size:9px;letter-spacing:.08em;opacity:.6}
-.tab-secondary.active{opacity:1}
-.tab-sep{width:1px;background:rgba(255,255,255,.08);margin:8px 4px;flex-shrink:0}
+/* Secondary row tabs */
+.tab-secondary{flex:1;padding:6px 0 5px;font-size:9px;letter-spacing:.09em;opacity:.55}
+.tab-secondary.active{opacity:.9}
 #tab-grow.active{color:#4ADE80;text-shadow:0 0 14px rgba(74,222,128,.5)}
 #tab-grow.active::after{background:linear-gradient(90deg,rgba(74,222,128,0),#4ADE80,rgba(74,222,128,0))}
 #tab-print.active { color:#FB923C; border-bottom-color:#FB923C; }
@@ -513,7 +513,8 @@ body::after{
     <button class="tab" onclick="switchTab('shopping')" id="tab-shopping">🦐 Aquaponics</button>
     <button class="tab" onclick="switchTab('grocery')" id="tab-grocery">🛒 List</button>
     <button class="tab" onclick="switchTab('print')" id="tab-print">🖨️ Print</button>
-    <div class="tab-sep"></div>
+  </div>
+  <div class="tabs-secondary">
     <button class="tab tab-secondary" onclick="switchTab('rooms')" id="tab-rooms">🏠 Rooms</button>
     <button class="tab tab-secondary" onclick="switchTab('timeline')" id="tab-timeline">📅 Timeline</button>
   </div>
