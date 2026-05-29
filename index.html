@@ -740,8 +740,8 @@ const PLANTS = [
     trim:"Pinch flower buds immediately, cut above leaf nodes, remove yellow lower leaves. Bushy growth = more harvest." },
   { id:"parsley",  name:"Curled Parsley",  emoji:"🌿", loc:"greenhouse", freq:"Morning — when top 2 inches dry, every 3-4 days", days:3, trimDays:14,
     trim:"Dead flower stalks → cut at base completely. Harvest outer stems at the base, leaving young inner growth. Never take more than half. Every 2-3 weeks." },
-  { id:"mint",     name:"Peppermint",      emoji:"🌿", loc:"greenhouse", freq:"Morning only — when top 2 inches dry. Currently overwatered", days:3, overwater:true, trimDays:7,
-    trim:"Pinch flower buds to keep leaves coming. Cut stems back by half if leggy — mint bounces back fast. Harvest aggressively." },
+  { id:"mint",     name:"Peppermint",      emoji:"🌿", loc:"greenhouse", freq:"⚠️ Died back badly (May 29) — HOLD water until soil is dry AND you confirm the crown is alive. Mint almost always regrows from the roots", days:3, overwater:true, trimDays:7,
+    trim:"Cut all the dead/bare stems back hard. Check the base: firm and green means it will regenerate fast; mushy means root rot from overwatering. Do not water on a schedule until you see new growth pushing up." },
   { id:"dill",     name:"Dill",            emoji:"🌿", loc:"greenhouse", freq:"Morning — when top 2 inches dry", days:3, trimDays:7,
     trim:"Snip outer fronds near the base. Cut flower heads to extend leaf production. Once fully flowered it declines — let go to seed if you want seeds for cooking." },
   { id:"rosemary", name:"Rosemary",        emoji:"🌿", loc:"greenhouse", freq:"Morning — weekly or less, drought tolerant", days:7,
@@ -749,15 +749,15 @@ const PLANTS = [
 
   // ── OUTDOOR EDIBLES ───────────────────────────────────────────────────────
   { id:"strawberry",    name:"Strawberry",         emoji:"🍓", loc:"outdoor", img:"images/strawberry.jpg", freq:"Daily — terra cotta pocket planter dries fast. Water slowly so all pockets saturate. In heat: may need morning AND evening. Water when top feels dry (could be twice daily). Check lower pockets get moisture.", days:1, note:"Runners visible — pinch to push energy into fruit, or root into new pots. White flowers open now — fruiting imminent. Terra cotta wicks moisture fast; never skip a day in sun." },
-  { id:"tomato",        name:"Heirloom Tomato",     emoji:"🍅", loc:"outdoor", freq:"Morning at the base — daily in heat, ease off as fruits ripen", days:1 },
-  { id:"cherry_tomato", name:"Husky Cherry Tomato", emoji:"🍒", loc:"outdoor", freq:"Morning at the base — daily in heat, ease off when ripening (prevents splitting)", days:1 },
-  { id:"jalapeno",      name:"Jalapeño",            emoji:"🌶️", loc:"outdoor", freq:"Morning at the base — every 2-3 days, top 2 inches dry. Less water = hotter pepper!", days:2 },
-  { id:"raspberry",     name:"Raspberry",           emoji:"🍇", loc:"outdoor", freq:"Morning at the base — every 2-3 days", days:2 },
+  { id:"tomato",        name:"Heirloom Tomato",     emoji:"🍅", loc:"outdoor", freq:"Morning at the base — deep & CONSISTENT every day in heat; ease off slightly as fruit ripens", days:1, note:"Big green beefsteaks are set (May 29) — some show catfacing/cracking scars, which come from irregular watering, so keep it even. Pinch out suckers (the shoots in the V between stem and branch) weekly and strip leaves touching the soil. Re-stake or cage it — it is leaning and outgrowing the bamboo." },
+  { id:"cherry_tomato", name:"Husky Cherry Tomato", emoji:"🍒", loc:"outdoor", freq:"Morning at the base — daily in heat, ease off when ripening (prevents splitting)", days:1, note:"Small green cherries forming (May 29). Husky is a compact (determinate) type — do NOT sucker-prune it like the heirloom or you cut your harvest. Just remove leaves touching the soil and any yellowing growth." },
+  { id:"jalapeno",      name:"Jalapeño",            emoji:"🌶️", loc:"outdoor", freq:"Morning at the base — every 2-3 days, let top 2 inches dry. Less water = hotter pepper!", days:2, note:"Recovered well and growing strong (May 29). Pinch the first flowers if you want a bushier plant and a bigger later harvest. Remove any yellowing lower leaves; otherwise it needs little pruning." },
+  { id:"raspberry",     name:"Raspberry",           emoji:"🍇", loc:"outdoor", freq:"Morning at the base — every 2-3 days, deep soak", days:2, note:"Robust and tall (May 29). These are first-year canes (primocanes) — do NOT cut them back; they fruit next year. Just tie them to the support as they grow and snip any dead or damaged tips." },
 
   // ── OUTDOOR ORNAMENTALS ───────────────────────────────────────────────────
-  { id:"dianthus",  name:"Dianthus / Pinks", emoji:"🌸", loc:"outdoor", freq:"Morning — every 2-3 days", days:2 },
-  { id:"daisy",     name:"Daisy",            emoji:"🌼", loc:"outdoor", freq:"Morning — every 2 days, needs consistency", days:2 },
-  { id:"candytuft", name:"Candytuft",        emoji:"🌾", loc:"outdoor", freq:"Morning — every 3-4 days, fairly drought tolerant", days:3 }];
+  { id:"dianthus",  name:"Dianthus / Pinks", emoji:"🌸", loc:"outdoor", freq:"Morning — every 2-3 days at the base, try not to wet the flowers", days:2, note:"Full bloom now (May 29) with a lot of spent brown flowers mixed in. Deadhead constantly — snip every faded bloom down to the next bud or leaf. That is the #1 thing that keeps it flowering all summer." },
+  { id:"daisy",     name:"Daisy",            emoji:"🌼", loc:"outdoor", freq:"Morning — every 2 days, needs consistency", days:2, note:"Still showing leaf stress (May 29). Make sure it is NOT sitting in water — the nursery basket inside the pot traps moisture. Deadhead spent flowers, remove yellow/brown leaves, and ideally repot into the terra cotta directly with drainage." },
+  { id:"candytuft", name:"Candytuft",        emoji:"🌾", loc:"outdoor", freq:"Morning — every 3-4 days, fairly drought tolerant", days:3, note:"Spring bloom is finishing (May 29) and it is getting leggy. Shear the whole plant back by about a third now — keeps it compact and can trigger a second flush of flowers." }];
 
 const GNAT_STEPS = [
   { id:"g_buy",   label:"Buy Mosquito Bits + yellow sticky traps" },
@@ -941,10 +941,12 @@ function updateHeader() {
   const hp=document.getElementById("habitsPct"); if(hp) hp.textContent=dpct+"%";
   // Garden trackers
   const today=todayKey();
-  const wDue=plantsDueOn(today), wDone=wDue.filter(p=>watered[p.id]===today).length;
-  const tDue=plantsTrimDueOn(today), tDone=tDue.filter(p=>trimmed[p.id]===today).length;
-  const wt=document.getElementById("waterTracker"); if(wt) wt.textContent="💧 "+wDone+"/"+wDue.length;
-  const tt=document.getElementById("trimTracker"); if(tt) tt.textContent="✂️ "+tDone+"/"+tDue.length;
+  const wDoneToday=PLANTS.filter(p=>watered[p.id]===today);
+  const wIds=new Set([...plantsDueOn(today).map(p=>p.id), ...wDoneToday.map(p=>p.id)]);
+  const wt=document.getElementById("waterTracker"); if(wt) wt.textContent = wIds.size ? ("💧 "+wDoneToday.length+"/"+wIds.size) : "💧 ✓ none due";
+  const tDoneToday=PLANTS.filter(p=>p.trimDays&&trimmed[p.id]===today);
+  const tIds=new Set([...plantsTrimDueOn(today).map(p=>p.id), ...tDoneToday.map(p=>p.id)]);
+  const tt=document.getElementById("trimTracker"); if(tt) tt.textContent = tIds.size ? ("✂️ "+tDoneToday.length+"/"+tIds.size) : "✂️ ✓ none due";
 }
 
 function weedHTML() {
@@ -1482,7 +1484,9 @@ function renderGarden() {
   html += `<div class="today-date">${d.toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"})}</div>`;
 
   // ── TODAY'S WATERING ────────────────────────────────────────────────────────
-  const dueToday = plantsDueOn(today);
+  const wDoneIds = PLANTS.filter(p => watered[p.id] === today).map(p => p.id);
+  const dueSchedIds = new Set([...plantsDueOn(today).map(p => p.id), ...wDoneIds]);
+  const dueToday = PLANTS.filter(p => dueSchedIds.has(p.id));
   const wateredToday = dueToday.filter(p => watered[p.id] === today);
   if (dueToday.length) {
     html += `<div class="section-label">💧 Today's Watering — ${wateredToday.length}/${dueToday.length} done</div>`;
@@ -1514,7 +1518,9 @@ function renderGarden() {
   }
 
   // ── TODAY'S TRIMMING ────────────────────────────────────────────────────────
-  const trimDueToday = plantsTrimDueOn(today);
+  const tDoneIdsG = PLANTS.filter(p => p.trimDays && trimmed[p.id] === today).map(p => p.id);
+  const trimSchedIds = new Set([...plantsTrimDueOn(today).map(p => p.id), ...tDoneIdsG]);
+  const trimDueToday = PLANTS.filter(p => trimSchedIds.has(p.id));
   const trimmedToday = trimDueToday.filter(p => trimmed[p.id] === today);
   if (trimDueToday.length) {
     html += `<div class="section-label">✂️ Today's Trimming — ${trimmedToday.length}/${trimDueToday.length} done</div>`;
