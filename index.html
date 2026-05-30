@@ -1246,7 +1246,7 @@ function renderToday() {
   }
 
   // Morning habits
-  hab(355, passive("🚫","No phone — go outside and stretch under the sun","#6366F1","Morning","15 min","☀️ Touch grass. Breathe air. Be a person. 🌧️ If it's raining, do it anyway and contemplate your decisions in the wet."), false);
+  if(new Date().getHours()<12) hab(355, passive("🚫","No phone — go outside and stretch under the sun","#6366F1","Morning","15 min","☀️ Touch grass. Breathe air. Be a person. 🌧️ If it's raining, do it anyway and contemplate your decisions in the wet."), false);
   let d0=!!laundry["morning-bed-"+today];     hab(360, strip("🛏️","Make the bed",           d0,"#A78BFA","toggleMorning('bed')",   "Morning","2 min"),           d0);
   let dbl=!!laundry["morning-blinds-"+today]; hab(361, strip("☀️","Open blinds — get natural light in",dbl,"#FCD34D","toggleMorning('blinds')","Morning","1 min"), dbl);
   let d1=!!laundry["morning-water-"+today];   hab(362, strip("💧","Drink 16oz water + take vitamins",d1,"#38BDF8","toggleMorning('water')","Morning","2 min"),d1);
@@ -1309,8 +1309,8 @@ function renderToday() {
   if(!isWeekday()){ let dvi=!!laundry["evening-vitamins-"+today]; hab(1245, strip("💊","Lay out next week's vitamins",dvi,"#38BDF8","toggleEvening('vitamins')","Night","1 min","Set up the whole week so mornings stay friction-free"), dvi); }
   let dbs=!!laundry["evening-bedshower-"+today]; hab(1252, strip("🚿","Before bed shower",dbs,"#06B6D4","toggleEvening('bedshower')","Night","10 min"), dbs);
   let d7=!!laundry["teeth-night-"+today]; hab(1260, strip("🪥","Brush teeth — night",d7,"#0891B2","toggleTeeth('night')","Night","2 min"), d7);
-  hab(1270, passive("😴","Bedtime — 11:00 PM","#8B5CF6","Night","–","Consistent sleep time is the single biggest lever for sleep quality"), false);
-  hab(1280, passive("🛌","Sleep Position Setup","#8B5CF6","Night","–","For shoulder/arm, wrists, and buttock joint issues — sleep on your back with strategic pillow support.<br><br><strong>BEST — On your back:</strong><br>• Pillow under knees (tilts pelvis, takes pressure off glutes and buttock joint)<br>• Arms at sides, wrists straight — not curled under, not overhead<br>• Pillow that keeps neck level with spine<br><br><strong>ACCEPTABLE — On your side (non-painful side):</strong><br>• Pillow between knees to keep hips stacked<br>• Hug a pillow with top arm so shoulder isn't dragged forward, wrist stays neutral<br>• Never lie on sore shoulder or tuck hand under pillow/head<br><br><strong>AVOID:</strong><br>• Stomach sleeping (cranks neck, strains shoulders/wrists)<br>• Any arm trapped overhead or pinned under body<br>• The couch<br><br><strong>KEY INSIGHT:</strong> Start in a fully supported neutral position so motionless hours don't pinch anything. Set up pillows BEFORE lying down."), false);
+  if(new Date().getHours()>=16) hab(1270, passive("😴","Bedtime — 11:00 PM","#8B5CF6","Night","–","Consistent sleep time is the single biggest lever for sleep quality"), false);
+  if(new Date().getHours()>=16) hab(1280, passive("🛌","Sleep Position Setup","#8B5CF6","Night","–","For shoulder/arm, wrists, and buttock joint issues — sleep on your back with strategic pillow support.<br><br><strong>BEST — On your back:</strong><br>• Pillow under knees (tilts pelvis, takes pressure off glutes and buttock joint)<br>• Arms at sides, wrists straight — not curled under, not overhead<br>• Pillow that keeps neck level with spine<br><br><strong>ACCEPTABLE — On your side (non-painful side):</strong><br>• Pillow between knees to keep hips stacked<br>• Hug a pillow with top arm so shoulder isn't dragged forward, wrist stays neutral<br>• Never lie on sore shoulder or tuck hand under pillow/head<br><br><strong>AVOID:</strong><br>• Stomach sleeping (cranks neck, strains shoulders/wrists)<br>• Any arm trapped overhead or pinned under body<br>• The couch<br><br><strong>KEY INSIGHT:</strong> Start in a fully supported neutral position so motionless hours don't pinch anything. Set up pillows BEFORE lying down."), false);
 
   // ── HELPER: push each task as individual strip ────────────────────────────────
   function pushTaskCards(groupIds,badgeType){
@@ -1890,38 +1890,34 @@ function renderPrint() {
     </div>`;
   }
 
+  const fpPick = PRINT_SCHEDULE[Math.floor(Date.now()/86400000)%PRINT_SCHEDULE.length];
   el.innerHTML = `
-    <!-- 14-DAY FUN PRINT SCHEDULE -->
+    <!-- FUN PRINT OF THE DAY -->
     <div style="margin-bottom:28px">
       <div style="text-align:center;margin-bottom:14px;padding-top:4px">
-        <div style="font-size:9px;letter-spacing:.25em;color:#c084fc;text-transform:uppercase;font-family:'Lora',serif;margin-bottom:6px">🎨 14-Day Fun Print Challenge</div>
-        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;background:linear-gradient(135deg,#c084fc,#818CF8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px">Fun Print Schedule</div>
-        <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;font-style:italic">One print a day — two weeks of fun</div>
+        <div style="font-size:9px;letter-spacing:.25em;color:#c084fc;text-transform:uppercase;font-family:'Lora',serif;margin-bottom:6px">🎨 Print Something Fun</div>
+        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;background:linear-gradient(135deg,#c084fc,#818CF8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px">Fun Print Ideas</div>
+        <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;font-style:italic">A fresh suggestion each day — no pressure, just for the joy of it</div>
       </div>
-      <div style="background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.25);border-radius:14px;padding:12px 14px;margin-bottom:14px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-          <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#c084fc;font-family:'Lora',serif">Progress</div>
-          <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#c084fc" id="fpPct">0/14</div>
-        </div>
-        <div style="background:rgba(255,255,255,.06);border-radius:6px;height:5px;overflow:hidden">
-          <div id="fpBar" style="height:100%;width:0%;background:linear-gradient(90deg,#c084fc,#818CF8);border-radius:6px;transition:width .3s"></div>
-        </div>
+      <div style="background:linear-gradient(135deg,rgba(251,146,60,.12),rgba(192,132,252,.08));border:1px solid rgba(251,146,60,.35);border-radius:14px;padding:13px 15px;margin-bottom:12px">
+        <div style="font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#FB923C;font-family:'Lora',serif;margin-bottom:4px">🛠️ Currently Printing</div>
+        <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--text)">🎎 Anime Elegance</div>
+        <div style="font-size:12px;color:var(--text2);font-family:'Lora',serif;line-height:1.5;margin-top:3px">Your tall figurine, in progress. Big slender prints love a rock-solid frame — the <b style="color:#818CF8">Tier 3 frame enhancement</b> in the Upgrade Path below is the cure for wobble at this height.</div>
       </div>
-      ${PRINT_SCHEDULE.map(p => {
-        const done = !!funPrints[p.id];
-        const isMW = p.src === 'MakerWorld';
-        return `<div onclick="toggleFunPrint('${p.id}')" style="display:flex;align-items:flex-start;gap:12px;padding:11px 13px;margin-bottom:7px;border-radius:12px;background:${done?'rgba(192,132,252,.12)':'rgba(255,255,255,.03)'};border:1px solid ${done?'rgba(192,132,252,.35)':'rgba(255,255,255,.07)'};cursor:pointer;transition:all .2s">
-          <div style="width:22px;height:22px;border-radius:6px;border:2px solid ${done?'#c084fc':'rgba(255,255,255,.2)'};background:${done?'#c084fc':'transparent'};flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px">${done?'✓':''}</div>
+      <div style="background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.3);border-radius:14px;padding:14px 15px">
+        <div style="font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#c084fc;font-family:'Lora',serif;margin-bottom:8px">🎲 Today's Fun Print Idea</div>
+        <div style="display:flex;align-items:center;gap:11px">
+          <div style="font-size:30px">${fpPick.emoji}</div>
           <div style="flex:1;min-width:0">
-            <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
-              <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);font-family:'Lora',serif;flex-shrink:0">Day ${p.day}</div>
-              <div style="font-size:13px;font-weight:700;color:${done?'#c084fc':'var(--text)'};${done?'text-decoration:line-through;opacity:.7':''}">${p.emoji} ${p.name}</div>
-              ${isMW?'<div style="font-size:8px;padding:2px 6px;border-radius:10px;background:rgba(99,102,241,.2);color:#818CF8;font-family:\'Lora\',serif;letter-spacing:.05em;flex-shrink:0">MakerWorld</div>':''}
-            </div>
-            <div style="font-size:11px;color:var(--text2);font-family:'Lora',serif;margin-top:3px">${p.note}</div>
+            <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap"><span style="font-size:16px;font-weight:700;color:var(--text);font-family:'Playfair Display',serif">${fpPick.name}</span>${fpPick.src==='MakerWorld'?`<span style="font-size:8px;padding:2px 6px;border-radius:10px;background:rgba(99,102,241,.2);color:#818CF8;font-family:'Lora',serif;letter-spacing:.05em">MakerWorld</span>`:''}</div>
+            <div style="font-size:12px;color:var(--text2);font-family:'Lora',serif;margin-top:2px">${fpPick.note}</div>
           </div>
-        </div>`;
-      }).join('')}
+        </div>
+        <div onclick="toggleFunPrint('${fpPick.id}')" style="margin-top:12px;display:flex;align-items:center;gap:9px;cursor:pointer;border-top:1px solid rgba(255,255,255,.06);padding-top:11px">
+          <div style="width:20px;height:20px;border-radius:6px;border:2px solid ${funPrints[fpPick.id]?'#c084fc':'rgba(255,255,255,.25)'};background:${funPrints[fpPick.id]?'#c084fc':'transparent'};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff">${funPrints[fpPick.id]?'✓':''}</div>
+          <span style="font-size:12px;color:${funPrints[fpPick.id]?'#c084fc':'var(--text2)'};font-family:'Lora',serif">${funPrints[fpPick.id]?'Printed it! 🎉':'Feeling it? Tap when you print it.'}</span>
+        </div>
+      </div>
     </div>
 
     <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);margin-bottom:24px"></div>
@@ -2187,7 +2183,7 @@ const HEADER_IMGS = [
 function updateHeaderBg(){
   const el=document.getElementById("headerBg");
   if(!el) return;
-  const url=HEADER_IMGS[new Date().getHours()%HEADER_IMGS.length];
+  const url=HEADER_IMGS[Math.floor(Date.now()/600000)%HEADER_IMGS.length];
   if(el.dataset.cur!==url){ el.style.backgroundImage="url('"+url+"')"; el.dataset.cur=url; }
 }
 function updateClock(){
