@@ -30,7 +30,7 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 
 body{
-  background:linear-gradient(rgba(6,5,10,.82),rgba(6,5,10,.92)),radial-gradient(ellipse 120% 70% at 50% 0%,rgba(40,20,70,.55),rgba(6,5,10,0) 60%),url("https://commons.wikimedia.org/wiki/Special:FilePath/Dark_Doodad_Nebula_Processed.jpg?width=1280");
+  background:linear-gradient(rgba(6,5,10,.82),rgba(6,5,10,.93)),url("https://commons.wikimedia.org/wiki/Special:FilePath/Clouds%20%26%20Calm%20Waters%20at%20Sunrise.jpg?width=1280");
   background-size:cover;background-position:center;background-attachment:fixed;background-repeat:no-repeat;
   color:var(--text);
   font-family:'Lora',Georgia,serif;
@@ -974,6 +974,7 @@ let gardenSub = "watering";
 let tankSub = "todo";
 function switchTab(t) {
   currentTab=t;
+  setTabBg(t);
   ["today","wellness","timeline","rooms","garden","shopping","grocery","print"].forEach(v=>{
     const el=document.getElementById("view-"+v);
     if(el) { el.style.display=v===t?"block":"none";
@@ -2197,12 +2198,29 @@ ST.on('value', () => {}, err => {
 });
 
 const HEADER_IMGS = [
-  "https://commons.wikimedia.org/wiki/Special:FilePath/APO_05.jpg?width=1280",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Hypertiling_new.jpg?width=1280",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/RedPetals.jpg?width=1280",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Fractal_Mandala.jpg?width=1280",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Fractal_Xaos_psychedelic.png?width=1280"
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Red%20Vortex%20Apophysis%20Fractal%20Flame.jpg?width=1280",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Center%20Apophysis%20Fractal%20Flame.jpg?width=1280",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Star%20Apophysis%20Fractal%20Flame.jpg?width=1280",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Waves%20Apophysis%20Fractal%20Flame.jpg?width=1280",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Blade%20Apophysis%20Fractal%20Flame.jpg?width=1280"
 ];
+
+const TAB_BG = {
+  today:"https://commons.wikimedia.org/wiki/Special:FilePath/Clouds%20%26%20Calm%20Waters%20at%20Sunrise.jpg?width=1280",
+  garden:"https://commons.wikimedia.org/wiki/Special:FilePath/Fern%20and%20lichen%20on%20forest%20floor.jpg?width=1280",
+  shopping:"https://commons.wikimedia.org/wiki/Special:FilePath/Leopard%20shark%20in%20kelp.jpg?width=1280",
+  grocery:"https://commons.wikimedia.org/wiki/Special:FilePath/DZ6%202629%20A%20cozy%20table%20for%20two%20-%20soft%20lights%20a%20single%20orchid%20and%20the%20promise%20of%20a%20perfect%20evening.jpg?width=1280",
+  print:"https://commons.wikimedia.org/wiki/Special:FilePath/Computer%20Circuit%20Board%20MOD%2045153619.jpg?width=1280",
+  wellness:"https://commons.wikimedia.org/wiki/Special:FilePath/Foggy%20Fanal%20forest%20in%20Seixal%2C%20Porto%20Moniz%2C%20Madeira%2C%202023%20May.jpg?width=1280",
+  rooms:"https://commons.wikimedia.org/wiki/Special:FilePath/(Do%20not%20use%20this%20image%20until%20after%20Jan%2025%2C%202014)%20FS%20Cabin2%20fire%20and%20living%20room%20sofa%20Virginia%20State%20Parks%20(10873549344).jpg?width=1280",
+  timeline:"https://commons.wikimedia.org/wiki/Special:FilePath/Milky%20way%20above%20the%20mountains.jpg?width=1280"
+};
+function setTabBg(t){
+  const u=TAB_BG[t]||TAB_BG.today;
+  if(document.body.dataset.tabbg===t) return;
+  document.body.dataset.tabbg=t;
+  document.body.style.backgroundImage="linear-gradient(rgba(6,5,10,.82),rgba(6,5,10,.93)),url('"+u+"')";
+}
 function updateHeaderBg(){
   const el=document.getElementById("headerBg");
   if(!el) return;
