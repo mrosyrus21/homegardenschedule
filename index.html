@@ -2183,7 +2183,7 @@ const HEADER_IMGS = [
 function updateHeaderBg(){
   const el=document.getElementById("headerBg");
   if(!el) return;
-  const url=HEADER_IMGS[Math.floor(Date.now()/600000)%HEADER_IMGS.length];
+  const url=HEADER_IMGS[Math.floor(Date.now()/86400000)%HEADER_IMGS.length];
   if(el.dataset.cur!==url){ el.style.backgroundImage="url('"+url+"')"; el.dataset.cur=url; }
 }
 function updateClock(){
