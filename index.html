@@ -699,64 +699,67 @@ const TASKS = {
 
 
 const SCHEDULE = [
-  // ── WEEK 1 ──────────────────────────────────────────────────────────────────
-  { date:"2026-05-13", tasks:["weed_full","leca_prep"],          note:"Weed killer check + start the LECA soak — you're doing it now!" },
-  { date:"2026-05-14", tasks:["measure_printer","find_desk"],           note:"Measure the printer, find a sturdy desk" },
-  { date:"2026-05-15", tasks:["e_k1"],                                  note:"Clear kitchen floor" },
-  { date:"2026-05-16", tasks:["h_ct"],                                   note:"Weekend — tackle the coffee table area" },
-  { date:"2026-05-17", tasks:["e_l1","e_l2","parse_trim"], note:"Weekend — living room + parsley" },
-  // ── WEEK 2 ──────────────────────────────────────────────────────────────────
-  { date:"2026-05-18", tasks:["leca_measure","meshlab_workflow","gnat_apply"], note:"Pool league tonight — morning tasks + evening gnat treatment" },
-  { date:"2026-05-19", tasks:["e_b1a","e_b1b","gnat_tea"],              note:"Bedroom floor clear + start BTI tea soak (24hrs)" },
-  { date:"2026-05-20", tasks:[],                                        note:"Light Wednesday — free day" },
-  { date:"2026-05-21", tasks:["basil_trim","sort_plants"],         note:"Trim basil + get indoor plants settled" },
-  { date:"2026-05-22", tasks:["herb_pinch"],          note:"Move Croton outside + pinch the herbs" },
-  { date:"2026-05-23", tasks:["k1","k2","l1"],                    note:"Weekend — fridge, pantry, plan aquarium spot" },
-  { date:"2026-05-24", tasks:[] },
-  // ── WEEK 3 ──────────────────────────────────────────────────────────────────
-  { date:"2026-05-25", tasks:[], off:true, offNote:"Pool league night 🎱" },
-  { date:"2026-05-26", tasks:["k3","k_stovetop"],                 note:"Counter clear + stovetop deep clean" },
-  { date:"2026-05-27", tasks:["k5"],                              note:"Light Wednesday — find homes for countertop strays" },
-  { date:"2026-05-28", tasks:["ba5","ba2","ba_medicine"],         note:"Bathroom reset — fresh towels, mirror, medicine cabinet" },
-  { date:"2026-05-29", tasks:["doctor_visit","ba1"], note:"Scrub bathroom + swap shower liner" },
-  { date:"2026-05-30", tasks:["g1","g2","g3"],                    note:"Garage day — clear it out and get the pegboard up" },
-  { date:"2026-05-31", tasks:["g4","g5","g_floor"],               note:"Weekend — workbench, labeling, degrease the floor" },
-  // ── WEEK 4 ──────────────────────────────────────────────────────────────────
+  // ── GETTING READY ─────────────────────────────────────────────────────────
+  { date:"2026-05-29", tasks:[], off:true, offNote:"Setup day — your schedule is getting prepped. Rest up; the journey begins Sunday. 🌱" },
+  { date:"2026-05-30", tasks:[], off:true, offNote:"Your morning is yours — a great breakfast and fetch with the dog. 🍳🐶 Enjoy it, then rest up before the big start." },
+
+  // ── WEEK 1 · KITCHEN (top priority) ───────────────────────────────────────
+  { date:"2026-05-31", tasks:["e_k1","k5"],               note:"🚀 Day 1! Start easy — clear the kitchen floor and give counter strays a home. Quick wins build momentum." },
   { date:"2026-06-01", tasks:[], off:true, offNote:"Pool league night 🎱" },
-  { date:"2026-06-02", tasks:["g6","l3"],                         note:"Finish garage workstation + deep clean living room floors" },
-  { date:"2026-06-03", tasks:["l4"],                              note:"Light Wednesday — organize the media area" },
-  { date:"2026-06-04", tasks:["l5","l_lights"],                   note:"Declutter decor then reward yourself — install the lights 🎉" },
-  { date:"2026-06-05", tasks:["l6","parse_harv"],                 note:"Set up aquarium or hydro station + harvest parsley" },
-  { date:"2026-06-06", tasks:["bk1"],        note:"Backyard weekend — full sweep, BBQ, clean furniture" },
-  { date:"2026-06-07", tasks:["bk4"],           note:"Weekend — seating, lights, greenery, cooler station. Summer is ready." },
-  // ── WEEK 5 ──────────────────────────────────────────────────────────────────
+  { date:"2026-06-02", tasks:["k_cabinets","k_utensils"], note:"Wipe the cabinet & drawer fronts, then tame the utensil/junk drawer." },
+  { date:"2026-06-03", tasks:["k_filter"],                note:"Light day — just clean the dishwasher filter. Easy win." },
+  { date:"2026-06-04", tasks:["k3"],                      note:"Clear the permanent clutter off the counters." },
+  { date:"2026-06-05", tasks:["k1"],                      note:"Deep clean the fridge — toss anything expired." },
+  { date:"2026-06-06", tasks:["k2","k6"],                 note:"Weekend — organize the pantry by use + label containers and spices." },
+  { date:"2026-06-07", tasks:["k_stovetop","k4"],         note:"Kitchen finale — stovetop + oven deep clean. 🎉 KITCHEN DONE!" },
+
+  // ── WEEK 2 · LIVING ROOM ──────────────────────────────────────────────────
   { date:"2026-06-08", tasks:[], off:true, offNote:"Pool league night 🎱" },
-  { date:"2026-06-09", tasks:["b2","b3"],                         note:"Clear bedroom floor + wash the bedding" },
-  { date:"2026-06-10", tasks:["b5"],                              note:"Light Wednesday — remove what doesn't belong from bedroom" },
-  { date:"2026-06-11", tasks:["b6"],                    note:"Set up calm bedroom environment + clean under the bed" },
-  { date:"2026-06-12", tasks:["o1","o_lighting"],                 note:"Plan desk layout + set up WFH lighting" },
-  { date:"2026-06-13", tasks:["b_closet","find_drum_spot"],       note:"Weekend — organize closet + set up the drum kit" },
-  { date:"2026-06-14", tasks:["o3","o4","o5"],                    note:"Weekend — cables, music zone, shelving" },
-  // ── WEEK 6 ──────────────────────────────────────────────────────────────────
+  { date:"2026-06-09", tasks:["e_l1","e_l2"],             note:"Living room: break down the boxes + clear out what doesn't belong." },
+  { date:"2026-06-10", tasks:["l_dust"],                  note:"Light day — dust surfaces, shelves, and electronics." },
+  { date:"2026-06-11", tasks:["l_couch","h_ct"],          note:"Vacuum the couch + reset the coffee table." },
+  { date:"2026-06-12", tasks:["l3"],                      note:"Deep clean the living room floors and surfaces." },
+  { date:"2026-06-13", tasks:["l4","l5","find_desk"],     note:"Weekend — organize the media area, declutter decor, and browse online for a cheap sturdy desk (for the office later)." },
+  { date:"2026-06-14", tasks:["l_windows","l_lights"],    note:"Clean the windows, then reward yourself — install the ambiance lights. 🎉 LIVING ROOM DONE!" },
+
+  // ── WEEK 3 · BATHROOM + BEDROOM START ─────────────────────────────────────
   { date:"2026-06-15", tasks:[], off:true, offNote:"Pool league night 🎱" },
-  { date:"2026-06-16", tasks:["b1","o2"],                         note:"Move the printer — desk should be here by now!" },
-  { date:"2026-06-17", tasks:["o6"],                              note:"Light Wednesday — acoustic panel" },
-  { date:"2026-06-18", tasks:["o_filing","ba3"],                  note:"Filing system + organize under bathroom sink" },
-  { date:"2026-06-19", tasks:["herb_pinch2","gard_fertilize"],    note:"Pinch herbs + fertilize the veg garden" },
-  { date:"2026-06-20", tasks:["k4","k_cabinets"],                 note:"Weekend — oven deep clean + wipe cabinet fronts" },
-  { date:"2026-06-21", tasks:["l_windows","b_dust_fan"],          note:"Weekend — clean windows + dust ceiling fans" },
-  // ── WEEK 7 ──────────────────────────────────────────────────────────────────
+  { date:"2026-06-16", tasks:["ba5","ba2"],               note:"Bathroom: fresh towels & mat, then clean the mirror and surfaces." },
+  { date:"2026-06-17", tasks:["ba_medicine"],             note:"Light day — organize the medicine cabinet." },
+  { date:"2026-06-18", tasks:["ba1","ba3"],               note:"Scrub the toilet/sink/tub + organize under the sink." },
+  { date:"2026-06-19", tasks:["ba_grout"],                note:"Deep clean the tile grout. 🎉 BATHROOM DONE!" },
+  { date:"2026-06-20", tasks:["e_b1a","e_b1b","b3"],      note:"Weekend — clothes off the floors (closet + room) + wash the bedding." },
+  { date:"2026-06-21", tasks:["b2","b4"],                 note:"Clear the floor of everything but laundry + pare the nightstand to essentials." },
+
+  // ── WEEK 4 · BEDROOM FINISH + OFFICE ──────────────────────────────────────
   { date:"2026-06-22", tasks:[], off:true, offNote:"Pool league night 🎱" },
-  { date:"2026-06-23", tasks:["gnat_check","gard_repot"],         note:"Check gnat traps + check for root-bound plants" },
-  { date:"2026-06-24", tasks:["k6"],                              note:"Light Wednesday — label containers and spices" },
-  { date:"2026-06-25", tasks:["k_filter","k_utensils"],           note:"Dishwasher filter + junk drawer org" },
-  { date:"2026-06-26", tasks:["ba_grout","bk_powerwash"],         note:"Hard work Friday — grout + power wash patio" },
-  { date:"2026-06-27", tasks:["gard_mulch","l_couch","l_dust"],   note:"Weekend — mulch pots, vacuum couches, dust living room" },
-  { date:"2026-06-28", tasks:["vacuum"],                          note:"🎉 Every project done. First full house vacuum. You built something beautiful." },
-  // ── RECURRING ───────────────────────────────────────────────────────────────
-  { date:"2026-07-12", tasks:["vacuum"], note:"Bi-weekly vacuum — keep it going" },
-  { date:"2026-07-26", tasks:["vacuum"], note:"Bi-weekly vacuum" },
-  { date:"2026-08-09", tasks:["vacuum"], note:"Bi-weekly vacuum" }];
+  { date:"2026-06-23", tasks:["b5","b_dust_fan"],         note:"Remove what doesn't belong + dust the ceiling fan." },
+  { date:"2026-06-24", tasks:["b6"],                      note:"Light day — set up a dark, calm sleep environment." },
+  { date:"2026-06-25", tasks:["b_closet"],                note:"Organize the closet — hanging, shelves, floor. 🎉 BEDROOM DONE!" },
+  { date:"2026-06-26", tasks:["o1","o_lighting"],         note:"Office: clear the desk & plan the layout + set up WFH lighting." },
+  { date:"2026-06-27", tasks:["o3","o4","o_filing"],      note:"Weekend — cables & peripherals, the music zone, and a filing system." },
+  { date:"2026-06-28", tasks:["o5","o6"],                 note:"Weekend — add shelving for gear/3D supplies + soundproof one wall." },
+
+  // ── WEEK 5 · OFFICE / PRINTER + GARAGE ────────────────────────────────────
+  { date:"2026-06-29", tasks:[], off:true, offNote:"Pool league night 🎱" },
+  { date:"2026-06-30", tasks:["measure_printer","b1"],    note:"Measure the printer + move it out of the bedroom (needs the desk in place)." },
+  { date:"2026-07-01", tasks:["o2"],                      note:"Light day — set up the 3D printer in the office." },
+  { date:"2026-07-02", tasks:["find_drum_spot"],          note:"Set up the drum kit. 🎉 OFFICE STUDIO DONE!" },
+  { date:"2026-07-03", tasks:["g2","g_floor"],            note:"Garage: sort tools (keep/donate/toss) + degrease the floor." },
+  { date:"2026-07-04", tasks:["g1","g3"],                 note:"Weekend — clear it out & sweep, then mount the pegboard/shelving." },
+  { date:"2026-07-05", tasks:["g4","g5","g6"],            note:"Weekend — workbench with lighting, label & group, set the workstation zone. 🎉 GARAGE DONE!" },
+
+  // ── WEEK 6 · BACKYARD + THE BIG ONE ───────────────────────────────────────
+  { date:"2026-07-06", tasks:[], off:true, offNote:"Pool league night 🎱" },
+  { date:"2026-07-07", tasks:["bk1","weed_full"],         note:"Backyard: full sweep & clear debris + hit the weeds." },
+  { date:"2026-07-08", tasks:["bk_powerwash"],            note:"Light day — power wash the patio/deck." },
+  { date:"2026-07-09", tasks:["bk4"],                     note:"Add string lights & ambiance — your summer hangout is ready. 🎉 BACKYARD DONE!" },
+  { date:"2026-07-10", tasks:["vacuum"],                  note:"🎉🎉 THE BIG ONE — the first full-house vacuum. Every room done. You built something beautiful." },
+
+  // ── RECURRING ─────────────────────────────────────────────────────────────
+  { date:"2026-07-24", tasks:["vacuum"], note:"Bi-weekly vacuum — keep it going" },
+  { date:"2026-08-07", tasks:["vacuum"], note:"Bi-weekly vacuum" },
+  { date:"2026-08-21", tasks:["vacuum"], note:"Bi-weekly vacuum" }];
 
 
 const PLANTS = [
