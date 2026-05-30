@@ -487,6 +487,8 @@ body::after{
 .tlog td{padding:4px 8px;border-bottom:1px solid rgba(26,58,92,.4);color:rgba(232,244,253,.8)}
 .tlog .ok{color:#4AD490}
 .tlog .warn{color:#F5B830}
+.header-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;background-repeat:no-repeat}
+.header-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,5,10,.50) 0%,rgba(6,5,10,.64) 42%,rgba(6,5,10,.93) 100%)}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
@@ -495,6 +497,7 @@ body::after{
 
 <div id="fb-loading" style="position:fixed;inset:0;background:#06050A;display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:16px"><div style="font-size:36px">🏠</div><div style="font-size:13px;color:#6A6480;font-family:'Lora',serif;letter-spacing:.1em">Syncing your schedule…</div></div>
 <div class="header">
+  <div class="header-bg" id="headerBg"></div>
   <div class="header-aurora"></div>
   <svg width="0" height="0" style="position:absolute">
     <defs>
@@ -2205,7 +2208,31 @@ ST.on('value', () => {}, err => {
   showApp();
 });
 
+const HEADER_IMGS = [
+  "https://commons.wikimedia.org/wiki/Special:FilePath/26Y%201599%202.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Cottage%20garden%20at%20Boreham%2C%20Essex%2C%20England%201.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Mixed%20border%20in%20a%20cottage%20garden%20at%20Boreham%2C%20Essex%2C%20England%2002.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Cottage%20garden%20trellis%20and%20lawn%20borders%20at%20Boreham%2C%20Essex%2C%20England.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Highdown%20Gardens%2C%20Worthing%2C%20Chalk%20Pit%20Garden%201.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Hydrangea%20flower%20summer%20garden.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Denver%20Botanic%20Gardens-12.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Herb%20Garden%20-%20Fountains%20Hall%20-%20North%20Yorkshire%2C%20England%20-%20DSC00547.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Aston%20Norwood%20Gardens%20%27Bird%27s%20Way%27%20downhill%20with%20overhanging%20cherry%20blossoms%20in%20morning%20light.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Outdoor%20wooden%20bench%20in%20Singapore%20Botanic%20Gardens%20at%20golden%20hour.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Field%20of%20Iceland%20poppies%20in%20the%20flower%20garden%20near%20Cheomseongdae%20Observatory%20in%20Gyeongju%20South%20Korea.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Red%20rose%20garden.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Rose%20garden%20in%20spring.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/De%20Cocksdorp%20tulip%20fields%202.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Lavender%20field%20near%20Esentai%20river.jpg?width=1200"
+];
+function updateHeaderBg(){
+  const el=document.getElementById("headerBg");
+  if(!el) return;
+  const url=HEADER_IMGS[new Date().getHours()%HEADER_IMGS.length];
+  if(el.dataset.cur!==url){ el.style.backgroundImage="url('"+url+"')"; el.dataset.cur=url; }
+}
 function updateClock(){
+  updateHeaderBg();
   const now=new Date();
   const h=now.getHours();
   const greet=h<12?"Good morning":h<17?"Good afternoon":h<21?"Good evening":"Good night";
