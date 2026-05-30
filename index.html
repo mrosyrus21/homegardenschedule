@@ -30,7 +30,8 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 
 body{
-  background:radial-gradient(ellipse 120% 70% at 50% 0%,#160d28 0%,#0a0713 45%,#06050A 100%);
+  background:linear-gradient(rgba(6,5,10,.82),rgba(6,5,10,.92)),radial-gradient(ellipse 120% 70% at 50% 0%,rgba(40,20,70,.55),rgba(6,5,10,0) 60%),url("https://commons.wikimedia.org/wiki/Special:FilePath/Dark_Doodad_Nebula_Processed.jpg?width=1280");
+  background-size:cover;background-position:center;background-attachment:fixed;background-repeat:no-repeat;
   color:var(--text);
   font-family:'Lora',Georgia,serif;
   min-height:100vh;
@@ -487,9 +488,8 @@ body::after{
 .tlog td{padding:4px 8px;border-bottom:1px solid rgba(26,58,92,.4);color:rgba(232,244,253,.8)}
 .tlog .ok{color:#4AD490}
 .tlog .warn{color:#F5B830}
-.header-bg{position:absolute;inset:0;z-index:0;overflow:hidden}
-.header-bg svg{position:absolute;inset:0;width:100%;height:100%;display:block}
-.header-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,5,10,.46) 0%,rgba(6,5,10,.74) 48%,rgba(6,5,10,.96) 100%)}
+.header-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;background-repeat:no-repeat;overflow:hidden}
+.header-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,5,10,.56) 0%,rgba(6,5,10,.76) 48%,rgba(6,5,10,.96) 100%)}
 .tl-note{font-size:11px;color:#9a93ad;font-style:italic;font-family:'Lora',serif;margin-top:6px;line-height:1.45;border-top:1px dashed rgba(255,255,255,.06);padding-top:6px}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -2197,52 +2197,17 @@ ST.on('value', () => {}, err => {
 });
 
 const HEADER_IMGS = [
-  "https://commons.wikimedia.org/wiki/Special:FilePath/26Y%201599%202.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Cottage%20garden%20at%20Boreham%2C%20Essex%2C%20England%201.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Mixed%20border%20in%20a%20cottage%20garden%20at%20Boreham%2C%20Essex%2C%20England%2002.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Cottage%20garden%20trellis%20and%20lawn%20borders%20at%20Boreham%2C%20Essex%2C%20England.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Highdown%20Gardens%2C%20Worthing%2C%20Chalk%20Pit%20Garden%201.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Hydrangea%20flower%20summer%20garden.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Denver%20Botanic%20Gardens-12.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Herb%20Garden%20-%20Fountains%20Hall%20-%20North%20Yorkshire%2C%20England%20-%20DSC00547.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Aston%20Norwood%20Gardens%20%27Bird%27s%20Way%27%20downhill%20with%20overhanging%20cherry%20blossoms%20in%20morning%20light.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Outdoor%20wooden%20bench%20in%20Singapore%20Botanic%20Gardens%20at%20golden%20hour.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Field%20of%20Iceland%20poppies%20in%20the%20flower%20garden%20near%20Cheomseongdae%20Observatory%20in%20Gyeongju%20South%20Korea.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Red%20rose%20garden.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Rose%20garden%20in%20spring.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/De%20Cocksdorp%20tulip%20fields%202.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Lavender%20field%20near%20Esentai%20river.jpg?width=1200"
+  "https://commons.wikimedia.org/wiki/Special:FilePath/APO_05.jpg?width=1280",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Hypertiling_new.jpg?width=1280",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/RedPetals.jpg?width=1280",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Fractal_Mandala.jpg?width=1280",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Fractal_Xaos_psychedelic.png?width=1280"
 ];
 function updateHeaderBg(){
   const el=document.getElementById("headerBg");
-  if(!el || el.dataset.built) return;
-  el.dataset.built="1";
-  const V="#a855f7", T="#22d3ee", A="#F0A820";
-  let rays="";
-  for(let i=0;i<48;i++){ const a=i*(Math.PI/24), c=Math.cos(a), s=Math.sin(a);
-    rays+='<line x1="'+(c*46).toFixed(1)+'" y1="'+(s*46).toFixed(1)+'" x2="'+(c*300).toFixed(1)+'" y2="'+(s*300).toFixed(1)+'"/>'; }
-  let polys="";
-  for(let k=0;k<7;k++){ const r=34+k*15, sides=(k%2?6:3), rot=k*8.5*Math.PI/180; let p="";
-    for(let q=0;q<sides;q++){ const a=(q/sides)*2*Math.PI - Math.PI/2 + rot; p+=(Math.cos(a)*r).toFixed(1)+","+(Math.sin(a)*r).toFixed(1)+" "; }
-    polys+='<polygon points="'+p.trim()+'"/>'; }
-  let circles="";
-  for(let k=0;k<4;k++){ circles+='<circle r="'+(42+k*36)+'"/>'; }
-  el.innerHTML =
-    '<svg viewBox="-300 -130 600 300" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">'
-    +'<defs>'
-    +'<radialGradient id="hgBase" cx="50%" cy="42%" r="62%"><stop offset="0%" stop-color="#241544"/><stop offset="52%" stop-color="#0c0820"/><stop offset="100%" stop-color="#050309"/></radialGradient>'
-    +'<radialGradient id="hgGlow" cx="50%" cy="42%" r="44%"><stop offset="0%" stop-color="'+V+'" stop-opacity="0.5"/><stop offset="58%" stop-color="'+T+'" stop-opacity="0.12"/><stop offset="100%" stop-color="'+V+'" stop-opacity="0"/></radialGradient>'
-    +'</defs>'
-    +'<rect x="-300" y="-130" width="600" height="300" fill="url(#hgBase)"/>'
-    +'<rect x="-300" y="-130" width="600" height="300" fill="url(#hgGlow)"/>'
-    +'<g fill="none" stroke-linecap="round">'
-    +'<g stroke="'+T+'" stroke-opacity="0.10" stroke-width="1">'+rays+'</g>'
-    +'<g stroke="'+A+'" stroke-opacity="0.20" stroke-width="1">'+circles+'</g>'
-    +'<g stroke="'+V+'" stroke-opacity="0.42" stroke-width="1.1">'+polys+'</g>'
-    +'<circle r="24" stroke="'+A+'" stroke-opacity="0.7" stroke-width="1.4"/>'
-    +'<ellipse rx="21" ry="10" stroke="'+T+'" stroke-opacity="0.78" stroke-width="1.3"/>'
-    +'<circle r="5.5" fill="'+A+'" fill-opacity="0.9"/>'
-    +'</g></svg>';
+  if(!el) return;
+  const url=HEADER_IMGS[Math.floor(Date.now()/600000)%HEADER_IMGS.length];
+  if(el.dataset.cur!==url){ el.style.backgroundImage="url('"+url+"')"; el.dataset.cur=url; }
 }
 function updateClock(){
   updateHeaderBg();
