@@ -1717,7 +1717,8 @@ function renderShopping() {
     ["5/26b","~0","~0","—","—","—","—","Essentially cycled"],
     ["5/27","0","0","5","7.2","—","—","CYCLED — two 0/0 ✅"],
     ["5/27*","0.25","0","5","7.6","125","60","Post-livestock mini cycle"],
-    ["5/29","0.25","0","5","7.6","—","—","Mini cycling, dosed Prime"]
+    ["5/29","0.25","0","5","7.6","—","—","Mini cycling, dosed Prime"],
+    ["5/30","0","0","5","7.6","—","—","Mini cycle COMPLETE — NH3 back to 0 ✅"]
   ];
   const rows = P.map(r=>`<tr>${r.map((c,i)=>`<td${i===0?' style="color:#7fe9dd;font-weight:700"':(i===7?' style="color:#9bb3c9;white-space:normal;min-width:160px"':'')}>${c}</td>`).join('')}</tr>`).join('');
   const chip=(v,k,cls)=>`<div style="background:#0a1628;border:1px solid #1a3a5c;border-radius:10px;padding:9px 4px;text-align:center"><div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:${cls==='warn'?'#F5B830':cls==='ok'?'#4AD490':'#00e5cc'}">${v}</div><div style="font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:#5a7a99;font-family:'Lora',serif">${k}</div></div>`;
@@ -1729,22 +1730,22 @@ function renderShopping() {
   <div style="text-align:center;margin-bottom:12px;padding-top:4px">
     <div style="font-size:9px;letter-spacing:.25em;color:#00e5cc;text-transform:uppercase;font-family:'Lora',serif;margin-bottom:6px">🌊 Cyrus · 3.7 Gal · Neocaridina</div>
     <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;background:linear-gradient(135deg,#4fc3f7,#00e5cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:3px">Nano Aquaponics Tank</div>
-    <div style="font-size:10px;color:#5a7a99;font-family:'Lora',serif;font-style:italic">Last updated May 29, 2026</div>
+    <div style="font-size:10px;color:#5a7a99;font-family:'Lora',serif;font-style:italic">Last updated May 30, 2026</div>
   </div>`;
 
   if (tankSub === "todo") {
     html += `<div style="background:linear-gradient(135deg,rgba(0,229,204,.1),rgba(79,195,247,.08));border:1px solid rgba(0,229,204,.3);border-radius:14px;padding:13px 15px;margin-bottom:12px">
-      <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#00e5cc;font-family:'Lora',serif;margin-bottom:4px">Status — May 29</div>
-      <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:5px">✅ Cycled · 🦐 Stocked · ⚠️ Mini-cycling</div>
-      <div style="font-size:12px;color:rgba(232,244,253,.78);font-family:'Lora',serif;line-height:1.5">Cycled 5/27, then 10 Blue Dream shrimp + 2 nerites added — normal post-stocking mini cycle. <b style="color:#F5B830">Dose Prime every 24–48h; don't feed until ammonia hits 0.</b></div></div>`;
+      <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#00e5cc;font-family:'Lora',serif;margin-bottom:4px">Status — May 30</div>
+      <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:5px">✅ Cycled · 🦐 Stocked · ✅ Stable</div>
+      <div style="font-size:12px;color:rgba(232,244,253,.78);font-family:'Lora',serif;line-height:1.5">Cycled 5/27, then 10 Blue Dream shrimp + 2 nerites added. The post-stocking mini cycle is <b style="color:#4AD490">complete as of 5/30 — ammonia back to 0</b>. <b style="color:#4AD490">Cleared to resume feeding and start the calcium project.</b></div></div>`;
     html += panel('🛒 Shopping &amp; Next Purchases',
       buy('shop-mossball','$14.99','Moss Ball (Aegagropila linnaei)')
       + buy('shop-moss','$14.99','Java or Christmas Moss (TC)')
       + buy('shop-almond','from $5','More almond leaves — stock up')
       + buy('shop-airstone','~$10','Ring air stone — fits around the fake anemone')
       + `<div style="font-size:10px;color:#5a7a99;margin-top:8px;font-style:italic">All from Aqua Rocks Colorado (ask for Tommy).</div>`);
-    html += panel('⚗️ Right Now (May 29)','Ammonia 0.25 — a normal mini cycle from adding 12 animals. Dose Prime <b>2–3 drops</b> every 24–48h; do <b>not</b> feed until it hits 0. Should clear in 24–48h.');
-    html += panel('🍤 Feeding Plan','<b>Not feeding yet</b> — wait for the mini cycle to clear.'
+    html += panel('⚗️ Right Now (May 30)','✅ Mini cycle <b>complete</b> — ammonia is back to <b>0</b> (NO2 0, NO3 5, pH 7.6). Tank is stable. Cleared to resume feeding and begin the calcium project. Keep an eye on pH/alk with the eggshell in.');
+    html += panel('🍤 Feeding Plan','<b style="color:#4AD490">Cleared to feed — mini cycle resolved 5/30.</b> Resume the <b>half stick every other day</b>.'
       + sh('Foods') + '<b>Primary:</b> Color Studio Shrimp Premium — HALF stick every other day (10 shrimp, 3.7 gal). <b>Backup:</b> Ultra Fresh micro pellet. <b>Natural (their main food):</b> biofilm on moss / pearl weed / roots + almond leaves (replace every 2–3 wks). <b>Veggies:</b> blanched zucchini / spinach / cucumber / peas, small piece once stable.'
       + sh('Rules') + '<ul><li>❌ No food while ammonia is elevated</li><li>✅ Remove uneaten food within 2–3h</li><li>✅ Underfeed rather than overfeed</li></ul>');
     html += panel('🔁 Ongoing Maintenance (once stable)','<ul><li>Weekly ~20% water change + test NH3 / NO2 / NO3 / pH</li><li>Remove uneaten food within 2–3h</li><li>Replenish almond leaves every 2–3 weeks</li><li>Monthly: scrape nerite eggs off the glass</li></ul>');
@@ -1777,7 +1778,7 @@ function renderShopping() {
   }
 
   else if (tankSub === "params") {
-    html += `<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-bottom:12px">${chip('0.25','NH3','warn')}${chip('0','NO2','ok')}${chip('5','NO3','ok')}${chip('7.6','pH')}${chip('125','Hard','ok')}${chip('77°','Temp','warn')}</div>`;
+    html += `<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-bottom:12px">${chip('0','NH3','ok')}${chip('0','NO2','ok')}${chip('5','NO3','ok')}${chip('7.6','pH')}${chip('125','Hard','ok')}${chip('77°','Temp','warn')}</div>`;
     html += panel('🎯 Neocaridina Targets',
       '<div class="kv"><span>Ammonia</span><span>0 ppm</span></div>'
       +'<div class="kv"><span>Nitrite</span><span>0 ppm</span></div>'
